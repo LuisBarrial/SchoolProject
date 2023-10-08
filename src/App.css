@@ -1,0 +1,217 @@
+*:root{
+  --var-colordark: #2f3236;
+}
+
+.h-100.d-md-none.user-select-all.slide-active {
+    animation: fadeIn 2s cubic-bezier(0, 1.43, 1, 1);
+}
+
+.label-menu{
+    animation: fadeIn2 2s cubic-bezier(0, 1.43, 1, 1);
+
+}
+.z-1{z-index: 1 !important;}
+.z-2{z-index: 2 !important;}
+.z-3{z-index: 3 !important;}
+.navbar-principal{
+    background-color: rgba(74, 72, 72, 0.4);
+    backdrop-filter: blur(5px);
+    
+}
+
+.animation-observers{
+    animation: fadeInGeneral 3s ease-in-out;
+}
+
+.align-items-center.active-menu-bar{
+    animation: fadeBar 1.5s ease-out;
+    background-color: rgba(54, 140, 215, 0.63);
+
+
+}
+
+.background-filter::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: -webkit-fill-available;
+    min-height: 100vh;
+    background: url("./assets/BetterImageCollege2.webp");
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: blur(2px) brightness(0.8);
+    z-index: -1;
+  }
+
+  /*ANIMACION SLIDEBAR*/
+  .alert-log {
+    opacity: 0; /* Inicialmente oculto */
+    visibility: hidden;
+    animation: alertAnimation 5s ease-out;
+  }
+  
+  .active-slide{
+    width: 100px !important;
+    transition: width 0.3s;
+  }
+
+  
+  .slider{
+    transition: width 0.3s;
+  }
+
+  .text-slide{
+    opacity: 1;
+    transition: all 0.2s;
+  }
+  .text-slide.active-slide{
+    display: none;
+    opacity: 0;
+  }
+  
+
+  .element-active.active-slide{
+    font-size: 0;
+  }
+  a.active-slide{
+    font-size: 0;
+    width: 100% !important;
+  }
+
+  .darkmodebtn.active, .darkmodebtn.active {
+    overflow: hidden !important;
+    opacity: 1;
+  
+  }
+  .darkmodebtn.active span.mx-4{
+    opacity: 0;
+  }
+
+ 
+  tr:hover{
+    background-color: #adaeb023;
+  }
+  .darkmodebtn:hover{
+    background-color: #195dcb00 !important;
+  }
+
+  .darkmodebtn:active{
+    background-color: #195dcb00 !important;
+  }
+
+  .darkmodebtn:hover{
+    background-color: #195dcb00 !important;
+  }
+
+  .darkmodebtn{
+    background-color: #195dcb00 !important;
+  }
+
+
+  /*ANIMACION SLIDEBAR FIN -----------*/
+
+
+  /*ANIMACION DARKMODE -----------*/
+
+  .is-dark{ 
+   color: white !important;
+   background-color: var(--var-colordark);
+  }
+  a.is-dark.btn.active{ 
+    color: white !important;
+    background-color: #1e3c62 !important;
+  }
+  a.is-dark:hover{
+    background-color: #53575d;
+  }
+  .dark-switch.switch::before{
+    left: 34px !important;
+    background-color:  var(--var-colordark);
+  }
+  .darkmodebtn:hover{
+    background-color: #535860;
+  }
+  .switch::before{
+    content: '';
+    position: absolute;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    background-color: white;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: 0.3s;
+
+  }
+  
+    /*ANIMACION DARKMODE  FIN-----------*/
+
+
+ 
+
+ 
+
+@keyframes fadeBar {
+
+    0%{ 
+        opacity: 0;
+    }
+
+    20%{
+        opacity: 1;
+    }
+    
+}
+
+@keyframes fadeIn {
+
+    0%{ opacity: 0;}
+
+    5%{opacity: 1;transform: rotateY(180deg);}
+    
+}
+
+@keyframes alertAnimation {
+    0% {
+      opacity: 1; 
+      visibility: visible;
+    }
+    50% {
+      opacity: 0; 
+      visibility: visible;
+    }
+    100% {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+
+@keyframes fadeIn2 {
+
+    0%{ opacity: 0;}
+
+    5%{opacity: 1;transform: rotateY(180deg);}
+    
+}
+
+@keyframes fadeInGeneral {
+
+    0%{ opacity: 0;margin-top: 40px; }
+
+    20%{opacity: 1;margin-top: 0px;}
+    
+}
+
+
+@media (max-width: 700px) {
+  .vh-100{
+    max-height: 100svh !important;
+  }
+
+  .min-vh-100{
+    min-height: 100svh !important;
+  }
+}
