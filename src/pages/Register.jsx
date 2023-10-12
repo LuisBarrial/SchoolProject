@@ -1,7 +1,6 @@
 import Header from "../components/Header";
-import img from "../assets/cool-background_1.webp";
-import { Link } from "react-router-dom";
-const Login = () => {
+import img from "../assets/SprinkleBg.webp";
+const Register = () => {
 
     function showErrorAlert(message) {
         
@@ -45,21 +44,23 @@ const Login = () => {
               backgroundImage: `url(${img})`,
               backgroundRepeat: "no-repeat",
               backgroundSize: "cover",
-
               borderRadius: '0.5rem',
               height: '100%'
             }}
           >
             <div className="card col-md-7 col-lg-6 h-100 my-0 shadow" style={{}}>
-              <div className="card-body d-flex justify-content-center my-4 align-items-center">
+              <div className="card-body d-flex justify-content-center my-2 align-items-center">
                 <form className="d-flex flex-column col-sm-9 col-md-9" >
-                <center><h1>Login</h1></center>
-                <label className="my-2">Ingrese su usuario</label>
-                <input id="login" className="border-0 border-bottom" name="txtuser" placeholder="ej: usuario123"></input>
-                <label className="my-2">Ingrese su Clave</label>
-                <input id="clave" className="border-0 border-bottom" type="password" autoComplete="true" placeholder="ej. 12345"></input>
+                <center><h1>Register</h1></center>
+                <label className="my-2">Ingrese su nombre</label>
+                <input id="Nombre" className="border-0 border-bottom" name="txtNombre" placeholder="Ej: Pedro"></input>
+                <label className="my-2">Ingrese su Apellido</label>
+                <input id="Apellido" className="border-0 border-bottom" name="txtApellido" placeholder="Ej: Suarez"></input>
+                <label className="my-2">Ingrese su Correo</label>
+                <input id="Usuario" className="border-0 border-bottom" type="email" name="txtEmail" placeholder="Ej: user@gmail.com"></input>
+                <label className="my-2">Ingrese su clave</label>
+                <input id="clave" className="border-0 border-bottom" type="password" autoComplete="true" placeholder="Ej. ******"></input>
                 <button onClick={handleSubmit} type="submit" className="my-4 btn btn-primary">Ingresar</button>
-                <span  className="user-select-none" >No tienes cuenta? <span className="text-info user-select-none" style={{cursor: 'pointer'}}><Link to={"/register"}>Ingrese aqui</Link></span></span>
                 </form>
               </div>
             </div>
@@ -70,4 +71,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

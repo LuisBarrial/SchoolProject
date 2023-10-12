@@ -25,7 +25,7 @@
 
 .align-items-center.active-menu-bar{
     animation: fadeBar 1.5s ease-out;
-    background-color: rgba(54, 140, 215, 0.63);
+    background-color: rgba(7, 74, 132, 0.63);
 
 
 }
@@ -213,5 +213,9 @@
 
   .min-vh-100{
     min-height: 100svh !important;
+  }
+
+  .table-responsive[aria-valuetext="tablaAlumnos"] {
+    height: 70svh!important;
   }
 }

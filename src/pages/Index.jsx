@@ -80,15 +80,6 @@ const Index = () => {
           <img className="icon" rel="preload" src={imgicon3} alt="icono-3" />
         </div>
       </main>
-      <h3>Educacion de calidad</h3>
-      <span>somos una institucion</span>
-      <h3>Educacion de calidad</h3>
-      <span>somos una institucion</span>
-      <h3>Educacion de calidad</h3>
-      <span>somos una institucion</span>
-      <h3>Educacion de calidad</h3>
-      <span>somos una institucion</span>
-      
     </>
   );
 };

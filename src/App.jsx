@@ -1,8 +1,11 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Index from "./pages";
 import { Suspense, lazy } from "react";
+import Dashboard from "./pages/Dashboard";
+import Register from "./pages/Register";
+import Nosotros from "./pages/Nosotros";
+import Politicas from "./pages/Politicas";
 const Login = lazy(() => import("./pages/Login"));
-const Dashboard = lazy(() => import("./pages/Dashboard"));
 
 function App() {
   return (
@@ -12,9 +15,9 @@ function App() {
           <Route exact path="/*" element={<Index />}></Route>
           <Route
             exact
-            path="login"
+            path="/login"
             element={
-              <Suspense>
+              <Suspense fallback={<div>Cargando...</div>}> 
                 <Login />
               </Suspense>
             }
@@ -23,12 +26,14 @@ function App() {
             exact
             path="/dashboard/*"
             element={
-              <Suspense>
                 <Dashboard />
-              </Suspense>
             }
           />
-          <Route exact path="/login" element={<Login />}></Route>
+          <Route exact path="/register" element={<Register />}></Route>
+          <Route exact path="/nosotros" element={<Nosotros />}></Route>
+          <Route exact path="/Politicas" element={<Politicas />}></Route>
+
+
         </Routes>
       </BrowserRouter>
     </>

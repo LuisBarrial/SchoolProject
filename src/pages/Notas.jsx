@@ -1,15 +1,36 @@
+import { useState } from "react";
 import { mockNotas } from "../mock/Mock";
-import { isDark } from "../mock/const";
+import { funcNormalize, isDark } from "../mock/const";
 
 const Notas = () => {
   const data = mockNotas;
   const isDarkModeStored = localStorage.getItem("dark") === "true";
   const isClassNameDark = isDark(isDarkModeStored);
 
+  const [notas,setNotas]=useState(data);
+
+  const normalizeString = funcNormalize;
+
+  const handleChangeText = (value) => {
+    const normalizedValue = normalizeString(value);
+    const newNotas = notas.filter(nota => {
+      const normalizedCurso = normalizeString(nota.curso);
+      return normalizedCurso.includes(normalizedValue);
+      })
+      setNotas(newNotas)
+      if (value===''){
+      setNotas(data)
+      }
+
+  }
+
   return (
     <>
       <div>
         <h1>Notas</h1>
+        <search>
+          <input className={"form-control my-4" + isClassNameDark } type="search" onChange={(e)=>{handleChangeText(e.target.value)}} placeholder="Busca un curso"/>
+        </search>
         <div className="table-responsive">
         <table className={"w-100 table text-center overflow-scroll " + isClassNameDark }>
           <thead>
@@ -21,7 +42,7 @@ const Notas = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map((datax) => {
+            {notas.map((datax) => {
             return(
               <tr key={datax.id}>
                 <td>{datax.id}</td>
