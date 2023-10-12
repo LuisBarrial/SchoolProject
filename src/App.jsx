@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Index from "./pages/index";
+import Index from "./pages/Indexs";
 import { Suspense, lazy } from "react";
 import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
