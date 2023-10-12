@@ -15,7 +15,7 @@ const Header = () => {
 
   return (
     <>
-      <section id="nav-section" className="vw-100 position-fixed z-1">
+      <header id="nav-section" className="vw-100 position-fixed z-1">
         <nav className="navbar-principal">
           <div className="d-flex p-3 justify-content-between mx-3">
             <div>
@@ -158,7 +158,7 @@ const Header = () => {
 
           </ul>
         )}
-      </section>
+      </header>
     </>
   );
 };

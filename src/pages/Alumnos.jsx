@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { funcNormalize, isDark } from "../mock/const";
+import { funcNormalize, isDark } from "../mock/constFunction";
 import { mockAlumno } from "../mock/Mock";
+import { DARKMODE } from "../mock/constVariable";
 
 const Alumnos = () => {
   const data = mockAlumno;
-  const isDarkModeStored = localStorage.getItem("dark") === "true";
+  const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
   const isClassNameDark = isDark(isDarkModeStored);
   const [alumno, setAlumno] = useState(data);
   const [currentPage,setCurrentPage] = useState(1)
@@ -68,7 +69,7 @@ const Alumnos = () => {
     <>
       <div>
         <h1>Alumnos</h1>
-        <search>
+        <div>
           <input
             className={"form-control my-4" + isClassNameDark}
             type="search"
@@ -81,7 +82,7 @@ const Alumnos = () => {
 
             placeholder="Busca un alumno"
           />
-        </search>
+        </div>
         <div className="table-responsive" aria-valuetext="tablaAlumnos"  style={{height: "53vh"}}>
           <table
            

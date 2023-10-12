@@ -8,9 +8,10 @@ import Horarios from "./Horarios";
 import { useState } from "react";
 import Alumnos from "./Alumnos";
 import Preguntas from "./Preguntas";
+import { DARKMODE } from "../mock/constVariable";
 
 const Dashboard = () => {
-  const isDarkModeStored = localStorage.getItem("dark") === "true";
+  const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
   const [isDarkMode, setIsDarkMode] = useState(isDarkModeStored);
 
   const toggleDarkMode = () => {

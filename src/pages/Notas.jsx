@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { mockNotas } from "../mock/Mock";
-import { funcNormalize, isDark } from "../mock/const";
+import { funcNormalize, isDark } from "../mock/constFunction";
+import { DARKMODE } from "../mock/constVariable";
 
 const Notas = () => {
   const data = mockNotas;
-  const isDarkModeStored = localStorage.getItem("dark") === "true";
+  const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
   const isClassNameDark = isDark(isDarkModeStored);
 
   const [notas,setNotas]=useState(data);
@@ -28,9 +29,9 @@ const Notas = () => {
     <>
       <div>
         <h1>Notas</h1>
-        <search>
+        <div>
           <input className={"form-control my-4" + isClassNameDark } type="search" onChange={(e)=>{handleChangeText(e.target.value)}} placeholder="Busca un curso"/>
-        </search>
+        </div>
         <div className="table-responsive">
         <table className={"w-100 table text-center overflow-scroll " + isClassNameDark }>
           <thead>

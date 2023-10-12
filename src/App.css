@@ -217,5 +217,6 @@
 
   .table-responsive[aria-valuetext="tablaAlumnos"] {
     height: 70svh!important;
+    margin-bottom: 5px;
   }
 }
