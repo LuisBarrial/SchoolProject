@@ -41,6 +41,9 @@ export const mockNotas = [
   },
 ];
 
+
+//**! MOOK ALUMNO ////////////////////////////////////////////////////////////////// */
+
 export const mockAlumno = [
   {
     id: 1,
@@ -267,3 +270,45 @@ export const mockAlumno = [
     correoElectronico: "jose.lopez@example.com",
   },
 ];
+
+
+//**! MOOK PREGUNTAS ////////////////////////////////////////////////////////////////// */
+
+
+
+
+export const mockPreguntas = [
+    {
+      question: '¿Cuándo se fundó el colegio San Luis Gonzaga de Ica?',
+      response: 'El colegio San Luis Gonzaga de Ica se fundó el 23 de julio de 1909.'
+    },
+    {
+      question: '¿Cuál es el lema del colegio San Luis Gonzaga de Ica?',
+      response: 'El lema del colegio es "Fé, Ciencia, Virtud".'
+    },
+    {
+      question: '¿Quién fue el fundador del colegio San Luis Gonzaga de Ica?',
+      response: 'El colegio fue fundado por el padre José Santana Morales.'
+    },
+    {
+      question: '¿Cuántos estudiantes aproximadamente asisten al colegio?',
+      response: 'Actualmente, el colegio cuenta con alrededor de 2,000 estudiantes.'
+    },
+    {
+      question: '¿Cuáles son las carreras profesionales que ofrece el colegio?',
+      response: 'El colegio ofrece carreras en Ciencias de la Salud, Ciencias Sociales y Humanidades, Ciencias Exactas y Tecnología.'
+    },
+    {
+      question: '¿Dónde se encuentra ubicado el colegio San Luis Gonzaga de Ica?',
+      response: 'El colegio se encuentra ubicado en la ciudad de Ica, Perú, en la dirección Avenida San Martín 1050.'
+    },
+    {
+      question: '¿Cuál es la mascota oficial del colegio?',
+      response: 'La mascota oficial del colegio es el "Águila Gonzaguina".'
+    },
+    {
+      question: '¿Qué logros académicos ha obtenido el colegio en los últimos años?',
+      response: 'En los últimos años, el colegio ha obtenido numerosos premios y reconocimientos en competencias académicas y deportivas a nivel nacional.'
+    },
+  ];
+  

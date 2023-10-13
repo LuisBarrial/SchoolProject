@@ -4,6 +4,7 @@ import { funcNormalize, isDark } from "../mock/constFunction";
 import { DARKMODE } from "../mock/constVariable";
 
 const Notas = () => {
+  console.log("render")
   const data = mockNotas;
   const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
   const isClassNameDark = isDark(isDarkModeStored);

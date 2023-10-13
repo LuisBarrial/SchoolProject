@@ -4,6 +4,7 @@ import img from "../assets/BetterImageCollege3.webp";
 import imgicon1 from "../assets/peruicon.png";
 import imgicon2 from "../assets/educacion.png" ;
 import imgicon3 from "../assets/universidad.png";
+import Footer from "../components/Footer";
 
 
 const Index = () => {
@@ -80,6 +81,7 @@ const Index = () => {
           <img className="icon" rel="preload" src={imgicon3} alt="icono-3" />
         </div>
       </main>
+      <Footer/>
     </>
   );
 };

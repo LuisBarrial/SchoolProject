@@ -1,6 +1,7 @@
 import Header from "../components/Header";
 import img from "../assets/cool-background_1.webp";
 import { Link } from "react-router-dom";
+import Footer from "../components/Footer";
 const Login = () => {
 
     function showErrorAlert(message) {
@@ -36,7 +37,7 @@ const Login = () => {
     <>
       <Header />
 
-      <section className="background-filter vw-100 vh-100 d-flex justify-content-center align-items-center">
+      <section className="background-filter vh-100 d-flex justify-content-center align-items-center">
         <div id="container-card" className="z-0 w-75  " style={{ position: "relative",height: "60%" }}>
 
           <div
@@ -66,6 +67,7 @@ const Login = () => {
           </div>
         </div>
       </section>
+      <Footer/>
     </>
   );
 };

@@ -4,7 +4,7 @@ import imglogo from "../assets/ImageFondoSLG_Ica.webp";
 import PropTypes from "prop-types";
 
 const SlideBar = ({ isDarkMode, toggleDarkMode }) => {
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(true);
 
   function toogle() {
     if (!isActive) {

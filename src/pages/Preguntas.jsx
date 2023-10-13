@@ -1,35 +1,71 @@
+import { useState } from "react";
+import { funcNormalize, isDark } from "../mock/constFunction";
+import { DARKMODE } from "../mock/constVariable";
+import { mockPreguntas } from "../mock/Mock";
+
 const Preguntas = () => {
+  const dataQ = mockPreguntas;
+  const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
+  const isClassNameDark = isDark(isDarkModeStored);
+  const [question, setQuestion] = useState(dataQ);
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = 2;
+  const lasIndex = currentPage * recordsPerPage;
+  const firstIndex = 0;
+  const records = question.slice(firstIndex, lasIndex);
+  const npage = Math.ceil(question.length / recordsPerPage);
+
+  const normalizeText = funcNormalize;
+  const handleChangeText = (value) => {
+    console.log("estoy buscando " + value);
+    const normalizeValue = normalizeText(value);
+    const newQuestion = dataQ.filter((questionD) => {
+      const normalizeAlumnos = normalizeText(questionD.question);
+      return normalizeAlumnos.includes(normalizeValue);
+    });
+    setQuestion(newQuestion);
+    if (value === "") {
+      setQuestion(dataQ);
+    }
+  };
+
+  function nextPage() {
+    if (currentPage !== lasIndex && currentPage < npage) {
+      setCurrentPage(currentPage + 1);
+      console.log("asas");
+    }
+
+  }
+
   return (
     <>
       <div>
-        <h1>Preguntas</h1>
+        <h1>Preguntas Frecuentes</h1>
+        <div>
+          <input
+            className={"form-control my-4" + isClassNameDark}
+            type="search"
+            onChange={(e) => {
+              handleChangeText(e.target.value)
+            }}
+            placeholder="Busca una palabra clave"
+          />
+        </div>
         <section id="preguntas">
-          <h2>Frecuentes</h2>
           <p>Aquí hay algunas preguntas que pueden surgir:</p>
           <ul>
-            <li>
-              <h3>¿Cómo funciona el sitio?</h3>
-              <p>
-                El sitio funciona mediante un sistema de preguntas y respuestas.
-                Los usuarios pueden publicar preguntas y responder a las
-                preguntas de otros usuarios.
-              </p>
-            </li>
-            <li>
-              <h3>¿Cuál es el propósito del sitio?</h3>
-              <p>
-                El propósito del sitio es proporcionar un foro para que los
-                usuarios puedan compartir información y aprender unos de otros.
-              </p>
-            </li>
-            <li>
-              <h3>¿Quiénes son los creadores del sitio?</h3>
-              <p>
-                El sitio fue creado por un equipo de desarrolladores de
-                software.
-              </p>
-            </li>
+            {records.map((questionData, idx) => {
+              return (
+                <li key={idx}>
+                  <h4>{questionData.question}</h4>
+                  <p>{questionData.response}</p>
+                </li>
+              );
+            })}
           </ul>
+
+          {question.length>2 && <button type="button" className="btn btn-info d-block m-auto w-50" style={{filter: 'drop-shadow(5px 5px 1px skyblue)'}} onClick={nextPage}>  Ver mas</button>}
+    
         </section>
       </div>
     </>
@@ -37,3 +73,26 @@ const Preguntas = () => {
 };
 
 export default Preguntas;
+
+/*  <li>
+<h4>¿Cómo funciona el sitio?</h4>
+<p>
+  El sitio funciona mediante un sistema de preguntas y respuestas.
+  Los usuarios pueden publicar preguntas y responder a las
+  preguntas de otros usuarios.
+</p>
+</li>
+<li>
+<h4>¿Cuál es el propósito del sitio?</h4>
+<p>
+  El propósito del sitio es proporcionar un foro para que los
+  usuarios puedan compartir información y aprender unos de otros.
+</p>
+</li>
+<li>
+<h4>¿Quiénes son los creadores del sitio?</h4>
+<p>
+  El sitio fue creado por un equipo de desarrolladores de
+  software.
+</p>
+</li> **/
