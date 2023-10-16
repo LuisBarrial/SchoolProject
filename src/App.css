@@ -150,7 +150,24 @@
     /*ANIMACION DARKMODE  FIN-----------*/
 
 
+  .day{
+    text-align: center;
+    width: 80px;
+    padding: 1rem 0.4rem;
+    font-size: 1rem;
+    border: solid 1px black;
+    font-weight: 500;
+  }
  
+  .day.inactive{
+    text-align: center;
+    width: 80px;
+    padding: 1rem 0.4rem;
+    font-size: 1rem;
+    background-color: #8794a6;
+    border: solid 1px black;
+    font-weight: 500;
+  }
 
  
 

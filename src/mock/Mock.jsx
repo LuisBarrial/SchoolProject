@@ -312,3 +312,34 @@ export const mockPreguntas = [
     },
   ];
   
+
+  export const horariosLunes = [
+    {
+      curso: 'Matemáticas',
+      horaInicio: '08:00',
+      horaFin: '09:30',
+      profesor: 'Profesor A',
+      aula: 'Aula 101',
+    },
+    {
+      curso: 'Historia',
+      horaInicio: '09:45',
+      horaFin: '11:15',
+      profesor: 'Profesor B',
+      aula: 'Aula 102',
+    },
+    {
+      curso: 'Ciencias',
+      horaInicio: '11:30',
+      horaFin: '13:00',
+      profesor: 'Profesor C',
+      aula: 'Aula 103',
+    },
+    {
+      curso: 'Inglés',
+      horaInicio: '14:00',
+      horaFin: '15:30',
+      profesor: 'Profesor D',
+      aula: 'Aula 104',
+    },
+  ];
