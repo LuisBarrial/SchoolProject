@@ -178,6 +178,8 @@
  .link-info{
   cursor: pointer;
  }
+
+
 @keyframes fadeBar {
 
     0%{ 
@@ -242,5 +244,9 @@
   .table-responsive[aria-valuetext="tablaAlumnos"] {
     height: 70svh!important;
     margin-bottom: 5px;
+  }
+
+  .procedurecontainer{
+    width: 85% !important;
   }
 }

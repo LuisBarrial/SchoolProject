@@ -144,7 +144,7 @@ const SlideBar = ({ isDarkMode, toggleDarkMode }) => {
   return (
     <>
       <div
-        className={` min-vh-100 h-auto darkmode slider position-fixed top-0 start-0 h-100 p-3 ${
+        className={` min-vh-100 h-auto darkmode slider position-relative top-0 start-0 h-100 p-3 ${
           isDarkMode ? "is-dark" : "bg-light"
         } ${isActive ? "active-slide" : ""}`}
         style={{ width: "250px" }}
