@@ -12,6 +12,8 @@ import { DARKMODE } from "../mock/constVariable";
 import AlumnosAdm from "./Admin/AlumnosAdmin";
 import PreguntasAdm from "./Admin/PreguntasAdmin";
 import NotasAdm from "./Admin/NotasAdmin";
+import Pago from "./Pago";
+import Profesores from "./Profesores";
 
 const Dashboard = () => {
   const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
@@ -65,14 +67,20 @@ const Dashboard = () => {
             <Route exact path="alumnos" element={<AlumnosAdm />} />
             <Route exact path="horarios" element={<Horarios />} />
             <Route exact path="preguntas" element={<PreguntasAdm />} />
+            <Route exact path="matricula" element={<Pago/>} />
+            <Route exact path="profesor" element={<Profesores />} />
+
+
             </> 
             :
             <>
             <Route exact path="*" element={<DashboardContent />} />
             <Route exact path="notas" element={<Notas />} />
+            <Route exact path="profesor" element={<Profesores />} />
             <Route exact path="perfil" element={<Perfil />} />
             <Route exact path="tramites" element={<Tramites />} />
             <Route exact path="cursos" element={<Cursos />} />
+            <Route exact path="matricula" element={<Pago/>} />
             <Route exact path="alumnos" element={<Alumnos />} />
             <Route exact path="horarios" element={<Horarios />} />
             <Route exact path="preguntas" element={<Preguntas/>} />

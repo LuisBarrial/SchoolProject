@@ -343,3 +343,41 @@ export const mockPreguntas = [
       aula: 'Aula 104',
     },
   ];
+  export const mockProfesores = [
+    {
+      id: 1,
+      nombre: "Profesor A",
+      edad: 40,
+      area: "Matemáticas",
+      descripcion: "Experto en cálculo y álgebra.",
+      horarios: [
+        {
+          dia: "Lunes",
+          horario: "10:00 AM - 12:00 PM"
+        },
+        {
+          dia: "Miércoles",
+          horario: "2:00 PM - 4:00 PM"
+        }
+      ],
+      correo: "profesorA@example.com"
+    },
+    {
+      id: 2,
+      nombre: "Profesor B",
+      edad: 35,
+      area: "Historia",
+      descripcion: "Especializado en historia mundial.",
+      horarios: [
+        {
+          dia: "Martes",
+          horario: "9:00 AM - 11:00 AM"
+        },
+        {
+          dia: "Jueves",
+          horario: "3:00 PM - 5:00 PM"
+        }
+      ],
+      correo: "profesorB@example.com"
+    }
+  ];

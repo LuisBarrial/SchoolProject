@@ -1,15 +1,15 @@
+const Pago = () => {
 
-const Perfil = () => {
 
 
     return(<>
     
     <div>
-        <h1>Perfil</h1>
+        <h1>Matricula</h1>
         <div className="bg-light table-responsive">
         </div>
     </div>
     </>)
 
 }
-export default Perfil;
+export default Pago;

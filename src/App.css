@@ -169,8 +169,15 @@
     font-weight: 500;
   }
 
- 
+  .procedures {
+  overflow: hidden;
+  width: 100%;
+  text-overflow: ellipsis;
+ }
 
+ .link-info{
+  cursor: pointer;
+ }
 @keyframes fadeBar {
 
     0%{ 

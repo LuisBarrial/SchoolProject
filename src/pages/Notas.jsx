@@ -34,26 +34,37 @@ const Notas = () => {
           <input className={"form-control my-4" + isClassNameDark } type="search" onChange={(e)=>{handleChangeText(e.target.value)}} placeholder="Busca un curso"/>
         </div>
         <div className="table-responsive">
-        <table className={"w-100 table text-center overflow-scroll " + isClassNameDark }>
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>Curso</th>
-              <th>Nota</th>
-              <th>Estado</th>
-            </tr>
-          </thead>
-          <tbody>
-            {notas.map((datax) => {
-            return(
-              <tr key={datax.id}>
-                <td>{datax.id}</td>
-                <td>{datax.curso}</td>
-                <td>{datax.nota}</td>
-                <td>{datax.nota>=12? 'APROBADO': 'DESAPROBADO'}</td>
-              </tr>)
-            })}
-          </tbody>
+        <table className={"table text-center"+ isClassNameDark }>
+            <thead>
+                <tr>
+                    <th>Curso</th>
+                    <th>E1</th>
+                    <th>E2</th>
+                    <th>R1</th>
+                    <th>E3</th>
+                    <th>EF</th>
+                    <th>RF</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                    {notas.map((value)=>{
+                        return(<>
+                        <tr>
+                            <th>{value.curso}</th>
+                            <td>12</td>
+                            <td>11</td>
+                            <td>12</td>
+                            <td>19</td>
+                            <td>12</td>
+                            <td>16</td>
+                            </tr>
+                            </>
+                        )
+                    })}
+
+
+            </tbody>
         </table>
         </div>
       </div>
