@@ -135,7 +135,7 @@ const AlumnosAdm = () => {
           </table>
           
         </div>
-        <nav >
+        <nav className="z-1" >
             <ul className="pagination">
               <li className="page-item">
                 <a href="#" className={"page-link "+ isClassNameDark} onClick={prevPage}>Prev</a>

@@ -42,7 +42,7 @@ const Dashboard = () => {
   const DashboardContentAdm = () => {
     return (
       <>
-        <div>
+        <div className="flex-column ">
           <h1>Bienvenido Administrador</h1>
         </div>
       </>
@@ -52,11 +52,11 @@ const Dashboard = () => {
   return (
     <>
       <div
-        className={` d-flex ${isDarkMode && "bg-dark"}`}
+        className={` d-flex flex-column flex-md-row ${isDarkMode && "bg-dark"}`}
         style={{ backgroundColor: "#e4e9f7" }} /** codigo del background del contenido **/
       >
         <SlideBar isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
-        <div className={`m-3 w-100 overflow-hidden ${isDarkMode ? "text-light" : ""}`}>
+        <div className={`w-100 h-100 min-vh-100 overflow-hidden dashboardcontent ${isDarkMode ? "text-light" : ""}`}>
           <Routes>
             {adm ? <> 
             <Route exact path="*" element={<DashboardContentAdm />} />

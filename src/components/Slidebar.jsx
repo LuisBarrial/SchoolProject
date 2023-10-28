@@ -144,7 +144,7 @@ const SlideBar = ({ isDarkMode, toggleDarkMode }) => {
   return (
     <>
       <div
-        className={` min-vh-100 h-auto darkmode slider position-relative top-0 start-0 h-100 p-3 ${
+        className={` min-vh-100 h-auto darkmode slider position-fixed z-4 top-0 start-0 h-100 p-3 ${
           isDarkMode ? "is-dark" : "bg-light"
         } ${isActive ? "active-slide" : ""}`}
         style={{ width: "250px" }}
@@ -155,6 +155,7 @@ const SlideBar = ({ isDarkMode, toggleDarkMode }) => {
         >
           <Link to={"/"}>
             <img
+            
               className=" user-select-none ps-1"
               width={60}
               rel="preload"
@@ -207,8 +208,10 @@ const SlideBar = ({ isDarkMode, toggleDarkMode }) => {
           </span>
         </div>
         <div
-          className="d-flex flex-column justify-content-between"
-          style={{ height: "calc(100% - 60px)" }}
+          className={`d-flex slider-content flex-column justify-content-between ${
+            isDarkMode ? "is-dark" : "bg-light"
+          } ${isActive ? "" : "active-slide-content"}`}
+          style={{ height: "calc(95vh - 60px)" }}
         >
           <div>
             <ul className="list-unstyled w-100">

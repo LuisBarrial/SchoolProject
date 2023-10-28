@@ -116,7 +116,7 @@ const Alumnos = () => {
           
         </div>
         <nav >
-            <ul className="pagination">
+            <ul className="pagination z-1">
               <li className="page-item">
                 <a href="#" className={"page-link "+ isClassNameDark} onClick={prevPage}>Prev</a>
               </li>

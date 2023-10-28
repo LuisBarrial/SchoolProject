@@ -17,7 +17,7 @@ const Header = () => {
     <>
       <header id="nav-section" className="vw-100 position-fixed z-1">
         <nav className="navbar-principal">
-          <div className="d-flex p-3 justify-content-between mx-3">
+          <div className="d-flex p-3 justify-content-between mx-1">
             <div>
             <Link to={"/index"} className="user-select-none">
             <img
