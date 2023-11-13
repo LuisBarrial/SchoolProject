@@ -1,5 +1,6 @@
 *:root{
   --var-colordark: #2f3236;
+    color-scheme: light dark; /* both supported */
 }
 
 .h-100.d-md-none.user-select-all.slide-active {
@@ -15,6 +16,7 @@
 .z-2{z-index: 2 !important;}
 .z-3{z-index: 3 !important;}
 .z-4{z-index: 4 !important;}
+
 
 .navbar-principal{
     background-color: rgba(74, 72, 72, 0.4);
@@ -118,12 +120,22 @@
   /*ANIMACION SLIDEBAR FIN -----------*/
 
 
+  .img-admin{
+    height: 50%;
+    width: 50%;
+  }
+
   /*ANIMACION DARKMODE -----------*/
 
   .is-dark{ 
    color: white !important;
    background-color: var(--var-colordark);
   }
+
+  .card.bg-dark{
+    background-color: var(--var-colordark) !important;
+  }
+  
   a.is-dark.btn.active{ 
     color: white !important;
     background-color: #1e3c62 !important;
@@ -186,7 +198,7 @@
 
 .dashboardcontent{
   margin-left: 100px;
-  padding: 10px 20px;
+  padding: 0.3rem 10px 0px 10px;
 }
 
 @keyframes fadeBar {
@@ -242,6 +254,11 @@
 
 
 @media (max-width: 768px) {
+
+  
+  .img-admin{
+    width: 100%;
+  }
 
   .text-slide.active-slide{
     display: block;

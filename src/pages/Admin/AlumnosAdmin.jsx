@@ -2,6 +2,7 @@ import { useState } from "react";
 import { funcNormalize, isDark } from "../../mock/constFunction";
 import { mockAlumno } from "../../mock/Mock";
 import { DARKMODE } from "../../mock/constVariable";
+import AddCard from "../../components/AddCard";
 
 const AlumnosAdm = () => {
   const data = mockAlumno;
@@ -20,15 +21,11 @@ const AlumnosAdm = () => {
   const normalizeText = funcNormalize;
 
   const handleChangeText = (value) => {
-    var start = Date.now();
-    console.log("estoy buscando "+ value)
     const normalizeValue = normalizeText(value);
     const newAlumnos = data.filter((alumnos) => {
       const normalizeAlumnos = normalizeText(alumnos.nombre);
       return normalizeAlumnos.includes(normalizeValue);
     });
-    var end = Date.now();
-    console.log(end - start);
     setAlumno(newAlumnos);
     if (value === "") {
       setAlumno(data);
@@ -36,12 +33,7 @@ const AlumnosAdm = () => {
   };
 
   function prevPage(){
-    console.log("last" + lasIndex)
-    console.log(firstIndex)
-    console.log(records)
 
-    console.log("current" +currentPage)
-    console.log("npage" +npage)
     if (currentPage !== firstIndex && currentPage>1){
         setCurrentPage(currentPage - 1)
     }
@@ -63,13 +55,25 @@ const AlumnosAdm = () => {
 
   }
 
+  const [addElement,setAddElement] = useState(false);
+  const [headerCells,setHeaderCell] = useState([]);
+
+  function getHeaders(){
+  const table = document.querySelector('table');
+  if (table) {
+    let Cells = Array.from(table.querySelectorAll('thead th')).map(cell => cell.textContent);
+    setHeaderCell(Cells);
+    console.log('Encabezados:', headerCells);
+  }}
+
 
   return (
     <>
       <div>
         <h1>Alumnos Admin</h1>
+        { addElement && <AddCard headers={headerCells}/>}
         <div className="d-flex align-items-center flex-wrap">
-        <button className="mx-1 btn h-50 d-block btn-info">Nuevo</button>
+        <button className="mx-1 btn h-50 d-block btn-info" onClick={()=>{getHeaders(); setAddElement(true);}}>Nuevo </button>
           <input
             className={"form-control my-2 mx-1 w-50" + isClassNameDark}
             type="search"

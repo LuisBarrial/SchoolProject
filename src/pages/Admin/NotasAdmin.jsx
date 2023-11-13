@@ -35,6 +35,7 @@ const NotasAdm = () => {
     if (value === "") { 
       setAlumno(data);
     }
+    setCurrentPage(1);
   };
 
   function prevPage(){
@@ -140,11 +141,11 @@ const NotasAdm = () => {
             {cardModal && <RenderCard/>}
       <div>
         <h1>Notas Admin</h1>
-        <div className="d-flex align-items-center flex-wrap">
+        <div className="d-flex align-items-center justify-content-around flex-wrap col-12">
           <input className={"form-control my-4 w-50" + isClassNameDark } type="search" onChange={(e)=>{handleChangeText(e.target.value)}} placeholder="Busca un alumno"/>
-          <div className="d-flex align-items-center">
+          <div className="d-flex align-items-center col-6 ">
           <input
-            className={"form-control my-2 w-50" + isClassNameDark}
+            className={"form-control my-2 w-50  col-6 " + isClassNameDark}
             type="search"
 
             placeholder="Busca Por salon"
@@ -191,9 +192,9 @@ const NotasAdm = () => {
          </table>
         </div>
         <nav className="z-1" >
-            <ul className="pagination">
+            <ul className="pagination mb-0">
               <li className="page-item">
-                <a href="#" className={"page-link "+ isClassNameDark} onClick={prevPage}>Prev</a>
+                <a href="#4" className={"page-link "+ isClassNameDark} onClick={prevPage}>Prev</a>
               </li>
               {
                 numbers.map((n,i)=>{
@@ -213,6 +214,29 @@ const NotasAdm = () => {
             </ul>
           </nav>
       </div>
+      <section className="">
+  <div className="card-container d-flex justify-content-center flex-wrap">
+    <div className={"card m-2 col-5 col-md-3 text-center"+ isClassNameDark} style={{ minWidth: '2rem' }}>
+      <div className="card-body">
+        <h5 className="card-title">Total de Alumnos</h5>
+        <h1>{data.length}</h1>
+      </div>
+    </div>
+    <div className={"card m-2 col-5 col-md-3 text-center"+ isClassNameDark} style={{ minWidth: '2rem' }}>
+      <div className="card-body ">
+        <h5 className="card-title">Alumnos Existentes</h5>
+        <h1>{data.length}</h1>
+      </div>
+    </div>
+    <div className={"card m-2 col-5 col-md-3 text-center"+ isClassNameDark} style={{ minWidth: '2rem' }}>
+      <div className="card-body">
+        <h5 className="card-title">Alumnos Desaprobados</h5>
+        <h1>9</h1>
+      </div>
+    </div>
+  </div>
+</section>
+
     </>
   );
 };

@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import imglogo from "../assets/ImageFondoSLG_Ica.webp";
 import PropTypes from "prop-types";
 
 const SlideBar = ({ isDarkMode, toggleDarkMode }) => {
   const [isActive, setIsActive] = useState(true);
+  const slideBarRef = useRef(null);
 
   function toogle() {
     if (!isActive) {
@@ -15,7 +16,23 @@ const SlideBar = ({ isDarkMode, toggleDarkMode }) => {
       console.log("desactivao");
     }
   }
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (slideBarRef.current && !slideBarRef.current.contains(e.target)) {
+        // El clic fue fuera del SlideBar, desactívalo
+        setIsActive(true);
+        console.log("clickfuera");
+      }
+    };
 
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
+  
   const links = [
     "Notas",
     "Alumnos",
@@ -144,6 +161,8 @@ const SlideBar = ({ isDarkMode, toggleDarkMode }) => {
   return (
     <>
       <div
+         id="elemento"
+        ref={slideBarRef}
         className={` min-vh-100 h-auto darkmode slider position-fixed z-4 top-0 start-0 h-100 p-3 ${
           isDarkMode ? "is-dark" : "bg-light"
         } ${isActive ? "active-slide" : ""}`}
