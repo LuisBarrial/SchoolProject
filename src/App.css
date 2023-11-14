@@ -3,8 +3,40 @@
     color-scheme: light dark; /* both supported */
 }
 
+.dark-theme {
+  --body-color: var(--var-colordark);
+  --font-color: rgb(0, 0, 0);
+  --bs-light-rgb: 255,255,255 !important;
+  .intentdarkmode{
+    color: var(--bs-light-rgb) !important;
+    background-color: var(--body-color) !important;
+  }
+  .table{
+    color: var(--bs-light-rgb);
+  }
+
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --body-color: black; 
+    --font-color: white;
+  }
+}
+
+.div{
+  color: var(--font-color);
+}
+
 .h-100.d-md-none.user-select-all.slide-active {
     animation: fadeIn 2s cubic-bezier(0, 1.43, 1, 1);
+}
+
+@media (prefers-color-scheme: dark){
+    div{
+      background-color: black;
+      color: white;
+    }
 }
 
 .label-menu{

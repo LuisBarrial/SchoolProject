@@ -100,7 +100,7 @@ const AlumnosAdm = () => {
           <table
            
             className={
-              "w-100 table text-center overflow-scroll " + isClassNameDark
+              "w-100 table text-center overflow-scroll "
             }
           >
             <thead>

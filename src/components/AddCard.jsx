@@ -14,7 +14,7 @@ const AddCard = ({headers}) => {
 
     return(
         <>
-        <div className="position-absolute top-50 start-50 p-2 card p-3 col-8 col-md-4 d-flex justify-content-center " style={{transform: "translate(-50%, -50%)"}}>
+        <div className="position-absolute top-50 start-50 p-2 card intentdarkmode p-3 col-8 col-md-4 d-flex justify-content-center " style={{transform: "translate(-50%, -50%)"}}>
 
             <form className="p-3 d-flex justify-content-center text-center flex-column ">
                 <fieldset className=" d-flex flex-column justify-content-center" >

@@ -5,7 +5,7 @@ import Perfil from "./Perfil";
 import Tramites from "./Tramites";
 import Cursos from "./Cursos";
 import Horarios from "./Horarios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Alumnos from "./Alumnos";
 import Preguntas from "./Preguntas";
 import { DARKMODE } from "../mock/constVariable";
@@ -20,8 +20,18 @@ import CursosAdm from "./Admin/CursosAdmin";
 const Dashboard = () => {
   const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
   const [isDarkMode, setIsDarkMode] = useState(isDarkModeStored);
-
-  const toggleDarkMode = () => {
+  useEffect(() => {
+    if (isDarkMode) {
+      // Aplicar lógica para cambiar a modo oscuro, por ejemplo, agregando una clase CSS al body o contenedor principal.
+      document.body.classList.add("dark-theme");
+      console.log("Modo oscuro habilitado");
+    } else {
+      // Aplicar lógica para cambiar a modo claro, por ejemplo, eliminar la clase CSS del modo oscuro.
+      document.body.classList.remove("dark-theme");
+      console.log("Modo oscuro deshabilitado");
+    }
+  }, [isDarkMode]);
+  const toggleDarkMode = () => {            
     const newDarkMode = !isDarkMode;
     setIsDarkMode(newDarkMode);
     localStorage.setItem("dark", newDarkMode.toString());
