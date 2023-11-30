@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { horariosLunes } from "../mock/Mock";
+import { DARKMODE } from "../mock/constVariable";
+import { isDark } from "../mock/constFunction";
 
 const Horarios = () => {
+  const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
+  const isClassNameDark = isDark(isDarkModeStored);
   let today = new Date();
   console.log(today);
   let activeDay;
@@ -29,11 +33,11 @@ const Horarios = () => {
       <div className="container">
         <div className="row">
           {horarios.map((horario, index) => (
-            <div key={index} className="col-12 col-md-6 col-lg-4 mb-3">
+            <div key={index} className={"col-12 col-md-6 col-lg-3 mb-3"}>
               <div className="card">
-                <div className="card-body">
+                <div className={"card-body rounded-4" + isClassNameDark}>
                   <h3 className="card-title">{horario.curso}</h3>
-                  <p className="card-text">Hora de inicio: {horario.horaInicio}</p>
+                  <p className="card-text ">Hora de inicio: {horario.horaInicio}</p>
                   <p className="card-text">Hora de finalización: {horario.horaFin}</p>
                   <p className="card-text">Profesor: {horario.profesor}</p>
                   <p className="card-text">Aula: {horario.aula}</p>

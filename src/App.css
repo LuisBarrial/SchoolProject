@@ -11,9 +11,6 @@
     color: var(--bs-light-rgb) !important;
     background-color: var(--body-color) !important;
   }
-  .table{
-    color: var(--bs-light-rgb);
-  }
 
 }
 

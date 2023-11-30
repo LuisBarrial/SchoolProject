@@ -1,5 +1,4 @@
 import { useState } from "react";
-import AddCard from "../../components/AddCard";
 
 const CursosAdm = () => {
 
@@ -17,7 +16,6 @@ const CursosAdm = () => {
     
     <div>
         <h1>Cursos</h1>
-        { addElement && <AddCard headers={headerCells}/>}
         <table>
         <thead>
               <tr>

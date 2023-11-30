@@ -1,15 +1,19 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { funcNormalize, isDark } from "../../mock/constFunction";
 import { DARKMODE } from "../../mock/constVariable";
-import { mockPreguntas } from "../../mock/Mock";
 import PropTypes from "prop-types";
+import RenderCard from "../../components/RenderCard";
 
 const PreguntasAdm = () => {
   
-  let [dataQ,setDataQ] = useState(mockPreguntas);
+
+
+  const [dataQ,setDataQ] = useState([]);
+  const [auxDataQ,setAuxDataQ] = useState([]);
+
   const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
   const isClassNameDark = isDark(isDarkModeStored);
-  const [question, setQuestion] = useState(mockPreguntas);
+  const [question, setQuestion] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 2;
   const lasIndex = currentPage * recordsPerPage;
@@ -17,13 +21,33 @@ const PreguntasAdm = () => {
   const records = question.slice(firstIndex, lasIndex);
   const npage = Math.ceil(question.length / recordsPerPage);
 
+  const getColumns = async () => {
+    const response = await fetch("http://localhost:8010/consulta", {
+      method: "GET",
+    });
+    const data = await response.json();
+    return data;
+  };
+
+  const fetchData = useCallback(async () => {
+    const data = await getColumns();
+    setDataQ(data);
+    setAuxDataQ(data);
+    setQuestion(data)
+  }, []);
+
+  useEffect(()=>{
+    const getDataAndSet= async () => {
+
+      fetchData();
+
+
+    }
+    getDataAndSet();
+  },[fetchData]);
+
   const deleteQuestion = (index) => {
-    const newData = [...question];
-    newData.splice(index, 1);
-    setQuestion(newData);
-    setDataQ(newData)
-    console.log("dataQ luego de delete")
-    console.log(dataQ)
+
   };
 
   const normalizeText = funcNormalize;
@@ -41,6 +65,7 @@ const PreguntasAdm = () => {
     }
   };
 
+
   function nextPage() {
     if (currentPage !== lasIndex && currentPage < npage) {
       setCurrentPage(currentPage + 1);
@@ -50,56 +75,9 @@ const PreguntasAdm = () => {
 
   const [cardModal, setCardModal] = useState(null);
 
-  const RenderCard = ({pregunta,respuesta}) => {
-    console.log("as");
-    return (
-      <form
-        className={
-          "position-absolute d-block flex-column justify-content-center col-8 col-md-4 pt-4  top-50 start-50 z-2" +
-          isClassNameDark
-        }
-        style={{
-          backgroundColor: "#e0dada",
-          transform: "translate(-50%,-50%)",
-          borderRadius: "10px 10px",
-        }}
-      >
-        <h2 className="text-center">Preguntas</h2>
-        <div className="d-flex justify-content-around mb-3">
-          <label className="col-sm-2 col-form-label">{pregunta}</label>
-          <div className="col-4 me-2">
-            <textarea
-              style={{ height: "30vh", width: "100%" }}
-              type="email"
-              className="form-control"
-              defaultValue={respuesta}
-            />
-          </div>
-        </div>
-        <div className="d-flex">
-          <button
-            type="button"
-            onClick={() => {
-              setCardModal(null);
-            }}
-            className="d-block m-auto btn bg-info mb-3"
-          >
-            Guardar
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setCardModal(null);
-            }}
-            className="d-block m-auto btn bg-info mb-3"
-          >
-            Cerrar
-          </button>
-        </div>
-      </form>
-    );
-  };
 
+
+  
   return (
     <>
       <div>
@@ -113,7 +91,7 @@ const PreguntasAdm = () => {
             }}
             placeholder="Busca una palabra clave"
           />
-          <button className="ms-3 btn h-50 d-block btn-info"> Agregar</button>
+          <button className="ms-3 btn h-50 d-block btn-info" type="button" onClick={()=>{}}> Agregar</button>
         </div>
 
         <section id="preguntas">
@@ -122,8 +100,8 @@ const PreguntasAdm = () => {
             {records.map((questionData, idx) => {
               return (
                 <li key={idx}>
-                  <h4>{questionData.question}</h4>
-                  <p className="m-0">{questionData.response}</p>
+                  <h4>{questionData.pregunta}</h4>
+                  <p className="m-0">{questionData.respuesta}</p>
                   <div className="d-flex">
                     <div id="editItem"
                       onClick={() => {
@@ -180,6 +158,8 @@ const PreguntasAdm = () => {
             <RenderCard
               pregunta={question[cardModal].question}
               respuesta={question[cardModal].response}
+              isClassNameDark={isClassNameDark}
+              setCardModal={setCardModal}
             />
           )}
 
