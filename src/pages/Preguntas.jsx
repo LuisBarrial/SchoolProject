@@ -1,13 +1,39 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { funcNormalize, isDark } from "../mock/constFunction";
 import { DARKMODE } from "../mock/constVariable";
-import { mockPreguntas } from "../mock/Mock";
 
 const Preguntas = () => {
-  const dataQ = mockPreguntas;
+
+  const getColumns = async () => {
+    const response = await fetch("http://localhost:8010/consulta", {
+      method: "GET",
+    });
+    const data = await response.json();
+    return data;
+  };
+
+  const fetchData = useCallback(async () => {
+    const data = await getColumns();
+    setDataQ(data);
+    setQuestion(data)
+
+  }, []);
+
+  useEffect(()=>{
+    const getDataAndSet= async () => {
+
+      fetchData();
+
+
+    }
+    getDataAndSet();
+  },[fetchData]);
+
+  const [dataQ,setDataQ] = useState([]);
+
   const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
   const isClassNameDark = isDark(isDarkModeStored);
-  const [question, setQuestion] = useState(dataQ);
+  const [question, setQuestion] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 2;
   const lasIndex = currentPage * recordsPerPage;
@@ -19,12 +45,12 @@ const Preguntas = () => {
   const handleChangeText = (value) => {
     console.log("estoy buscando " + value);
     const normalizeValue = normalizeText(value);
-    const newQuestion = dataQ.filter((questionD) => {
-      const normalizeAlumnos = normalizeText(questionD.question);
+    const newQuestion = question.filter((questionD) => {
+      const normalizeAlumnos = normalizeText(questionD.pregunta);
       return normalizeAlumnos.includes(normalizeValue);
     });
     setQuestion(newQuestion);
-    if (value === "") {
+    if (value === "" ) {
       setQuestion(dataQ);
     }
   };
@@ -57,8 +83,8 @@ const Preguntas = () => {
             {records.map((questionData, idx) => {
               return (
                 <li key={idx}>
-                  <h4>{questionData.question}</h4>
-                  <p>{questionData.response}</p>
+                  <h4>{questionData.pregunta}</h4>
+                  <p>{questionData.respuesta}</p>
                 </li>
               );
             })}

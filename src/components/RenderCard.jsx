@@ -1,6 +1,10 @@
 import PropTypes from "prop-types";
+import { useRef} from "react";
 
-const RenderCard = ({pregunta,respuesta,isClassNameDark,setCardModal}) => {
+const RenderCard = ({id,pregunta,respuesta,isClassNameDark,setCardModal,updateData}) => {
+
+    const responseRef = useRef(respuesta);
+
     console.log("as");
     return (
       <form
@@ -23,13 +27,18 @@ const RenderCard = ({pregunta,respuesta,isClassNameDark,setCardModal}) => {
               type="email"
               className="form-control"
               defaultValue={respuesta}
+        
+              onChange={(e) => {
+                responseRef.current = e.target.value;
+              }}
             />
           </div>
         </div>
         <div className="d-flex">
           <button
             type="button"
-            onClick={() => {
+            onClick={(e) => {
+              updateData(id,pregunta,responseRef.current,e);
               setCardModal(null);
             }}
             className="d-block m-auto btn bg-info mb-3"
@@ -53,7 +62,8 @@ const RenderCard = ({pregunta,respuesta,isClassNameDark,setCardModal}) => {
   export default RenderCard;
 
   RenderCard.propTypes = {
-  
+    id: PropTypes.number,
+    updateData: PropTypes.func,
     pregunta: PropTypes.string,
     respuesta: PropTypes.string,
     isClassNameDark: PropTypes.string,

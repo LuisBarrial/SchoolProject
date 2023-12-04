@@ -21,7 +21,6 @@ const SlideBar = ({ isDarkMode, toggleDarkMode }) => {
       if (slideBarRef.current && !slideBarRef.current.contains(e.target)) {
         // El clic fue fuera del SlideBar, desactívalo
         setIsActive(true);
-        console.log("clickfuera");
       }
     };
 

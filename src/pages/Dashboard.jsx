@@ -16,6 +16,7 @@ import Pago from "./Pago";
 import Profesores from "./Profesores";
 import imgadmincontent from "../assets/imageadministratorcontent.webp";
 import CursosAdm from "./Admin/CursosAdmin";
+import TramiteAdmin from "./Admin/TramiteAdmin";
 
 const Dashboard = () => {
   const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
@@ -113,7 +114,7 @@ const Dashboard = () => {
                 <Route exact path="*" element={<DashboardContentAdm />} />
                 <Route exact path="notas" element={<NotasAdm />} />
                 <Route exact path="perfil" element={<Perfil />} />
-                <Route exact path="tramites" element={<Tramites />} />
+                <Route exact path="tramites" element={<TramiteAdmin/>} />
                 <Route exact path="cursos" element={<CursosAdm />} />
                 <Route exact path="alumnos" element={<AlumnosAdm />} />
                 <Route exact path="horarios" element={<Horarios />} />

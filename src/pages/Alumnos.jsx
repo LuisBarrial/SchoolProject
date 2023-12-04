@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { funcNormalize, isDark } from "../mock/constFunction";
 import { mockAlumno } from "../mock/Mock";
 import { DARKMODE } from "../mock/constVariable";
@@ -7,42 +7,55 @@ const Alumnos = () => {
   const data = mockAlumno;
   const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
   const isClassNameDark = isDark(isDarkModeStored);
-  const [alumno, setAlumno] = useState(data);
+  const [alumno, setAlumno] = useState([]);
+  const [auxalumno, setAuxAlumno] = useState([]);
   const [currentPage,setCurrentPage] = useState(1)
   const recordsPerPage = 8;
   const lasIndex = currentPage * recordsPerPage;
   const firstIndex = lasIndex - recordsPerPage;
   const records = alumno.slice(firstIndex, lasIndex);
-  const npage = Math.ceil(alumno.length / recordsPerPage )
-  const numbers = [...Array(npage + 1).keys()].slice(1)
+  const npage = Math.ceil(alumno.length / recordsPerPage);
+  const numbers = [...Array(npage + 1).keys()].slice(1);
     
 
 
+  const getColumns = async () => {
+    const response = await fetch("http://localhost:8010/estudiante/usuario?grado=5A", {
+      method: "GET",
+    });
+    const data = await response.json();
+    return data;
+  };
+  const fetchDataAndSetAlumno = useCallback(async () => {
+    const data = await getColumns();
+    setAlumno(data);
+    setAuxAlumno(data);
+  }, []); // No tienes dependencias, ya que no usas ninguna variable externa dentro de la función
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchDataAndSetAlumno();
+    };
+
+    fetchData();
+  }, [fetchDataAndSetAlumno]);
+
+  
   const normalizeText = funcNormalize;
 
   const handleChangeText = (value) => {
-    var start = Date.now();
-    console.log("estoy buscando "+ value)
     const normalizeValue = normalizeText(value);
-    const newAlumnos = data.filter((alumnos) => {
+    const newAlumnos = alumno.filter((alumnos) => {
       const normalizeAlumnos = normalizeText(alumnos.nombre);
       return normalizeAlumnos.includes(normalizeValue);
     });
-    var end = Date.now();
-    console.log(end - start);
     setAlumno(newAlumnos);
     if (value === "") {
-      setAlumno(data);
+      setAlumno(auxalumno);
     }
   };
-
   function prevPage(){
-    console.log("last" + lasIndex)
-    console.log(firstIndex)
-    console.log(records)
 
-    console.log("current" +currentPage)
-    console.log("npage" +npage)
     if (currentPage !== firstIndex && currentPage>1){
         setCurrentPage(currentPage - 1)
     }
@@ -87,27 +100,25 @@ const Alumnos = () => {
           <table
            
             className={
-              "w-100 table text-center overflow-scroll "
+              "w-100 table text-center overflow-scroll "+ isClassNameDark
             }
           >
             <thead>
               <tr>
                 <th>Id</th>
                 <th>Nombre</th>
-                <th>Genero</th>
-                <th>Edad</th>
+                <th>Grado</th>
                 <th>Correo</th>
               </tr>
             </thead>
             <tbody>
-              {records.map((datax) => {
+              {records.map((datax,idx) => {
                 return (
                   <tr key={datax.id}>
-                    <td>{datax.id}</td>
+                    <td>{idx+1}</td>
                     <td>{datax.nombre}</td>
-                    <td>{datax.genero}</td>
-                    <td>{datax.edad}</td>
-                    <td>{datax.correoElectronico}</td>
+                    <td>{datax.grado}</td>
+                    <td>{datax.correo}</td>
                   </tr>
                 );
               })}

@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import Swal from "sweetalert2";
 import { showAlertDelete } from "./AlertDelete";
 
 

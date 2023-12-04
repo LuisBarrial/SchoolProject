@@ -3,13 +3,68 @@ import { funcNormalize, isDark } from "../../mock/constFunction";
 import { DARKMODE } from "../../mock/constVariable";
 import PropTypes from "prop-types";
 import RenderCard from "../../components/RenderCard";
+import { showAlertDelete } from "../../components/AlertDelete";
+import CenterCard from "../../components/CenterCard";
 
 const PreguntasAdm = () => {
-  
-
+  const Payload = (pregunta, respuesta) => {
+    var data = {};
+    data.pregunta = pregunta;
+    data.respuesta = respuesta;
+    data.estado = "Espera";
+    data.id = 17;
+    console.log(data);
+    fetch("http://localhost:8010/consulta", {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (response.ok) {
+          fetchData();
+          return response.json();
+        }
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error en la solicitud:", error);
+      });
+  };
+  async function handlerSubmit(e) {
+    e.preventDefault();
+    const pregunta = document.getElementsByName("pregunta")[0].value;
+    const respuesta = document.getElementsByName("respuesta")[0].value;
+    Payload(pregunta,respuesta);
+    setAddElement(false);
+  }
+  const deleteData = (id) => {  
+  fetch("http://localhost:8010/consulta/" + id, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    method: "DELETE",
+  })
+    .then((response) => {
+      if (response.ok) {
+        response.text();
+        fetchData();
+      }
+    })
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error("Error en la solicitud:", error);
+    });
+  }
 
   const [dataQ,setDataQ] = useState([]);
-  const [auxDataQ,setAuxDataQ] = useState([]);
 
   const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
   const isClassNameDark = isDark(isDarkModeStored);
@@ -32,8 +87,8 @@ const PreguntasAdm = () => {
   const fetchData = useCallback(async () => {
     const data = await getColumns();
     setDataQ(data);
-    setAuxDataQ(data);
     setQuestion(data)
+
   }, []);
 
   useEffect(()=>{
@@ -46,17 +101,30 @@ const PreguntasAdm = () => {
     getDataAndSet();
   },[fetchData]);
 
-  const deleteQuestion = (index) => {
 
-  };
+  const updateData =async (id, pregunta, respuesta, event) => {
+    event.preventDefault();
+    var data = {};
+    data.id = id;
+    data.pregunta = pregunta;
+    data.respuesta = respuesta;
+    console.log(data); 
+    const response = await fetch("http://localhost:8010/consulta",{headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    }, method: 'PUT', body: JSON.stringify(data) });
+    const info = await response.json();
+    fetchData();
+    console.log(info);
+  }
 
   const normalizeText = funcNormalize;
+
   const handleChangeText = (value) => {
-    console.log(dataQ)
     console.log("estoy buscando " + value);
     const normalizeValue = normalizeText(value);
     const newQuestion = question.filter((questionD) => {
-      const normalizeAlumnos = normalizeText(questionD.question);
+      const normalizeAlumnos = normalizeText(questionD.pregunta);
       return normalizeAlumnos.includes(normalizeValue);
     });
     setQuestion(newQuestion);
@@ -75,7 +143,7 @@ const PreguntasAdm = () => {
 
   const [cardModal, setCardModal] = useState(null);
 
-
+  const [addElement, setAddElement] = useState(false);
 
   
   return (
@@ -91,8 +159,37 @@ const PreguntasAdm = () => {
             }}
             placeholder="Busca una palabra clave"
           />
-          <button className="ms-3 btn h-50 d-block btn-info" type="button" onClick={()=>{}}> Agregar</button>
+          <button className="ms-3 btn h-50 d-block btn-info z-3" type="button" onClick={()=>{setCardModal(null); setAddElement(true);}}> Agregar</button>
         </div>
+
+            {addElement && (<><CenterCard>
+                <div className={"card " +isClassNameDark} onClick={(e)=>{e.stopPropagation()}}>
+                <div className="card-header">
+                  <h1>Agregar Pregunta <span className="me-auto float-end" style={{cursor:'pointer'}} onClick={()=>setAddElement(false)}>X</span></h1>
+                </div>
+                  <div className={"card-body "+isClassNameDark}>
+                  <form className={"form-control "+isClassNameDark} onSubmit={(e)=>{handlerSubmit(e)}}>
+                    <fieldset className="d-flex justify-content-center">
+                  <label className="w-100">
+                    Agregar Pregunta
+                    <br></br>
+                    <textarea id="pregunta" name="pregunta" className="mt-2" type="text"/>
+                  </label>
+                  <label>
+                    Agregar Respuesta
+                    <br></br>
+                    <textarea id="respuesta" name="respuesta" className="mt-2"  type="text"/>
+                  </label>
+                  </fieldset>
+                  <button className="m-auto d-block mt-4 btn btn-info" type="submit">Agregar</button>
+                  
+                  </form>
+
+                  </div>
+
+                </div>
+              
+              </CenterCard></>)}
 
         <section id="preguntas">
           <p>Preguntas Sugeridas</p>
@@ -100,12 +197,16 @@ const PreguntasAdm = () => {
             {records.map((questionData, idx) => {
               return (
                 <li key={idx}>
+                  <p className="m-0">Estado : {questionData.estado}</p>
                   <h4>{questionData.pregunta}</h4>
                   <p className="m-0">{questionData.respuesta}</p>
                   <div className="d-flex">
+                    
                     <div id="editItem"
                       onClick={() => {
-                        setCardModal(idx); // Establece el índice en el estado para mostrar la tarjeta modal
+                        setCardModal(idx);
+                         console.log(question);
+
                       }}
                       className="p-2"
                       style={{ cursor: "pointer" }}
@@ -128,8 +229,7 @@ const PreguntasAdm = () => {
                         />
                       </svg>
                     </div>
-                    <div id="deleteItem" className="p-2" style={{ cursor: "pointer" }} onClick={()=>{
-                      deleteQuestion(idx)
+                    <div id="deleteItem" className="p-2" style={{ cursor: "pointer" }} onClick={()=>{showAlertDelete(questionData.id,deleteData,isClassNameDark)
                         }}>
                       <svg
                         width={20}
@@ -156,10 +256,12 @@ const PreguntasAdm = () => {
           </ul>
           {cardModal !== null && (
             <RenderCard
-              pregunta={question[cardModal].question}
-              respuesta={question[cardModal].response}
+              id={question[cardModal].id}
+              pregunta={question[cardModal].pregunta}
+              respuesta={question[cardModal].respuesta}
               isClassNameDark={isClassNameDark}
               setCardModal={setCardModal}
+              updateData={updateData}
             />
           )}
 
