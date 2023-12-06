@@ -1,15 +1,36 @@
-import { useState } from "react";
-import { mockNotas } from "../mock/Mock";
+import { useCallback, useEffect, useState } from "react";
 import { funcNormalize, isDark } from "../mock/constFunction";
 import { DARKMODE } from "../mock/constVariable";
 
 const Notas = () => {
   console.log("render")
-  const data = mockNotas;
   const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
   const isClassNameDark = isDark(isDarkModeStored);
 
-  const [notas,setNotas]=useState(data);
+  const [notas,setNotas]=useState([]);
+  const [auxNotas,setAuxNotas]=useState([]);
+
+  const getColumns = async () => {
+    const response = await fetch("http://localhost:8010/notas?idEstudiante=19", {
+      method: "GET",
+    });
+    const data = await response.json();
+    return data;
+  };
+  const fetchDataAndSetNotas = useCallback(async () => {
+    const data = await getColumns();
+    setNotas(data);
+    setAuxNotas(data);
+  }, []); // No tienes dependencias, ya que no usas ninguna variable externa dentro de la función
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchDataAndSetNotas();
+    };
+
+    fetchData();
+  }, [fetchDataAndSetNotas]);
+
 
   const normalizeString = funcNormalize;
 
@@ -21,7 +42,7 @@ const Notas = () => {
       })
       setNotas(newNotas)
       if (value===''){
-      setNotas(data)
+      setNotas(auxNotas)
       }
 
   }
@@ -48,10 +69,10 @@ const Notas = () => {
                 </tr>
             </thead>
             <tbody>
-                    {notas.map((value)=>{
-                        return(<>
-                        <tr>
-                            <th>{value.curso}</th>
+                    {notas.map((value,idx)=>{
+                        return(
+                        <tr key={idx+1}>
+                            <th >{value.curso.nombre}</th>
                             <td>12</td>
                             <td>11</td>
                             <td>12</td>
@@ -59,7 +80,7 @@ const Notas = () => {
                             <td>12</td>
                             <td>16</td>
                             </tr>
-                            </>
+                            
                         )
                     })}
 

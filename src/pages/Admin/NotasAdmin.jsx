@@ -1,16 +1,17 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { funcNormalize, isDark } from "../../mock/constFunction";
 import { DARKMODE } from "../../mock/constVariable";
-import { mockAlumno, mockNotas } from "../../mock/Mock";
+import PropTypes from "prop-types";
+import RenderCard from "../../components/RenderCard";
+
 
 const NotasAdm = () => {
   console.log("render");
 
-  const data = mockAlumno;
-  const notas = mockNotas;
   const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
   const isClassNameDark = isDark(isDarkModeStored);
-  const [alumno, setAlumno] = useState(data);
+  const [alumno, setAlumno] = useState([]);
+  const [auxAlumno, setAuxAlumno] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 8;
   const lasIndex = currentPage * recordsPerPage;
@@ -19,18 +20,41 @@ const NotasAdm = () => {
   const npage = Math.ceil(alumno.length / recordsPerPage);
   const numbers = [...Array(npage + 1).keys()].slice(1);
 
+  const [notas,setNotas] = useState([]);
+
+  const getColumns = async () => {
+    const response = await fetch("http://localhost:8010/estudiante", {
+      method: "GET",
+    });
+    const data = await response.json();
+    return data;
+  };
+  const fetchDataAndSetAlumno = useCallback(async () => {
+    const data = await getColumns();
+    setAlumno(data);
+    setAuxAlumno(data);
+  }, []); // No tienes dependencias, ya que no usas ninguna variable externa dentro de la función
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchDataAndSetAlumno();
+    };
+
+    fetchData();
+  }, [fetchDataAndSetAlumno]);
+
   const normalizeText = funcNormalize;
 
   const handleChangeText = (value) => {
     console.log("estoy buscando " + value);
     const normalizeValue = normalizeText(value);
-    const newAlumnos = data.filter((alumnos) => {
+    const newAlumnos = alumno.filter((alumnos) => {
       const normalizeAlumnos = normalizeText(alumnos.nombre);
       return normalizeAlumnos.includes(normalizeValue);
     });
     setAlumno(newAlumnos);
     if (value === "") {
-      setAlumno(data);
+      setAlumno(auxAlumno);
     }
     setCurrentPage(1);
   };
@@ -56,19 +80,38 @@ const NotasAdm = () => {
     setCurrentPage(id);
   }
 
+  const getColumnsNotas = async (id) => {
+    const response = await fetch("http://localhost:8010/notas?idEstudiante="+id, {
+      method: "GET",
+    });
+    const data = await response.json();
+    return data;
+  };
+
+
   const [cardModal, setCardModal] = useState(false);
 
-  const RenderCard = () => {
+
+
+
+  const RenderCard = ({notas}) => {
+    console.log(notas)
+      
+RenderCard.propTypes={
+  notas: PropTypes.array
+}
     return (
       <form
         className={
-          "position-absolute d-block flex-column justify-content-center col-8 col-md-4 pt-4  top-50 start-50 z-2" +
+          "position-absolute d-block flex-column justify-content-center col-8 col-md-4 pt-4 pb-4 top-50 start-50 z-2" +
           isClassNameDark
         }
         style={{
-          backgroundColor: "#e0dada",
+          backgroundColor: "#e0dada !important",
           transform: "translate(-50%,-50%)",
           borderRadius: "10px 10px",
+          border: '3px solid black'
+
         }}
       >
         <h3 className="text-center">Notas</h3>
@@ -98,19 +141,17 @@ const NotasAdm = () => {
               </tr>
             </thead>
             <tbody>
-              {notas.map((value) => {
+              {notas.map((value,idx) => {
                 return (
-                  <>
-                    <tr>
-                      <th>{value.curso}</th>
-                      <td>12</td>
-                      <td>11</td>
-                      <td>12</td>
-                      <td>19</td>
-                      <td>12</td>
-                      <td>16</td>
+                    <tr key={idx}>
+                      <th>{value.curso.nombre}</th>
+                      <td><input style={{"width":'30px'}} defaultValue={value.e1}/></td>
+                      <td><input style={{"width":'30px'}} defaultValue={value.e2}/></td>
+                      <td><input style={{"width":'30px'}} defaultValue={value.r1}/></td>
+                      <td><input style={{"width":'30px'}} defaultValue={value.e3}/></td>
+                      <td><input style={{"width":'30px'}} defaultValue={value.ef}/></td>
+                      <td><input style={{"width":'30px'}} defaultValue={value.rf}/></td>
                     </tr>
-                  </>
                 );
               })}
             </tbody>
@@ -129,9 +170,10 @@ const NotasAdm = () => {
     );
   };
 
+  
   return (
     <>
-      {cardModal && <RenderCard />}
+      {cardModal && <RenderCard notas={notas} />}
       <div>
         <h1>Notas Admin</h1>
         <div className="d-flex align-items-center justify-content-around flex-wrap col-12">
@@ -166,16 +208,16 @@ const NotasAdm = () => {
               </tr>
             </thead>
             <tbody>
-              {records.map((datax) => {
+              {records.map((datax,idx) => {
                 return (
-                  <tr key={datax.id}>
-                    <td>{datax.id}</td>
+                  <tr key={idx}>
+                    <td>{idx+1}</td>
                     <td>{datax.nombre}</td>
                     <td>
                       <div className="d-flex justify-content-evenly">
                         <div
                           className=""
-                          onClick={() => setCardModal(true)}
+                          onClick={async () => {  const infoNota = await getColumnsNotas(datax.id); setNotas(infoNota);    setCardModal(true); } }
                           style={{ cursor: "pointer" }}
                         >
                           <svg
@@ -279,7 +321,7 @@ const NotasAdm = () => {
           >
             <div className="card-body">
               <h5 className="card-title">Total de Alumnos</h5>
-              <h1>{data.length}</h1>
+              <h1>{alumno.length}</h1>
             </div>
           </div>
           <div
@@ -288,7 +330,7 @@ const NotasAdm = () => {
           >
             <div className="card-body ">
               <h5 className="card-title">Alumnos Existentes</h5>
-              <h1>{data.length}</h1>
+              <h1>{alumno.length}</h1>
             </div>
           </div>
           <div
@@ -306,3 +348,4 @@ const NotasAdm = () => {
   );
 };
 export default NotasAdm;
+

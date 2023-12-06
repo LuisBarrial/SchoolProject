@@ -17,6 +17,7 @@ import Profesores from "./Profesores";
 import imgadmincontent from "../assets/imageadministratorcontent.webp";
 import CursosAdm from "./Admin/CursosAdmin";
 import TramiteAdmin from "./Admin/TramiteAdmin";
+import ProfesoresAdmin from "./Admin/ProfesoresAdmin";
 
 const Dashboard = () => {
   const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
@@ -29,7 +30,7 @@ const Dashboard = () => {
 
   const [about, setAbout] = useState(false);
 
-  const [adm, setAdm] = useState(true);
+  const [adm, setAdm] = useState(false);
 
   const DashboardContent = () => {
     return (
@@ -115,12 +116,12 @@ const Dashboard = () => {
                 <Route exact path="notas" element={<NotasAdm />} />
                 <Route exact path="perfil" element={<Perfil />} />
                 <Route exact path="tramites" element={<TramiteAdmin/>} />
-                <Route exact path="cursos" element={<CursosAdm />} />
+                <Route exact path="cursos" element={<CursosAdm/>} />
                 <Route exact path="alumnos" element={<AlumnosAdm />} />
                 <Route exact path="horarios" element={<Horarios />} />
                 <Route exact path="preguntas" element={<PreguntasAdm />} />
                 <Route exact path="matricula" element={<Pago />} />
-                <Route exact path="profesor" element={<Profesores />} />
+                <Route exact path="profesor" element={<ProfesoresAdmin />} />
               </>
             ) : (
               <>

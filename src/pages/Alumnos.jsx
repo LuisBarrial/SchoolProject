@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { funcNormalize, isDark } from "../mock/constFunction";
-import { mockAlumno } from "../mock/Mock";
 import { DARKMODE } from "../mock/constVariable";
 
 const Alumnos = () => {
-  const data = mockAlumno;
   const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
   const isClassNameDark = isDark(isDarkModeStored);
   const [alumno, setAlumno] = useState([]);
