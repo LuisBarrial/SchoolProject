@@ -17,7 +17,10 @@ import imgadmincontent from "../assets/imageadministratorcontent.webp";
 import CursosAdm from "./Admin/CursosAdmin";
 import TramiteAdmin from "./Admin/TramiteAdmin";
 import ProfesoresAdmin from "./Admin/ProfesoresAdmin";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import MatriculaAdmin from "./Admin/MatriculaAdmin";
+import { DataContext } from "../Hook/Context";
+import { jwtDecode } from "jwt-decode";
 
 const Dashboard = () => {
   const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
@@ -30,13 +33,31 @@ const Dashboard = () => {
 
   const [about, setAbout] = useState(false);
 
-  const [adm, setAdm] = useState(true);
+  const {contextData} = useContext(DataContext);
+
+
+
+  useEffect(()=>{
+    const token = localStorage.getItem("jwt");
+    let deco = {};
+    if(token){
+        const decoded = jwtDecode(token);
+        deco = decoded;
+        console.log(deco);
+        if(deco.rol=="ADMIN") setAdm(true);
+    }
+    
+  
+},[])
+
+
+  const [adm, setAdm] = useState(false);
 
   const DashboardContent = () => {
     return (
       <>
         <div>
-          <h1>Bienvenido Usuario</h1>
+          <h1>Bienvenido</h1>
         </div>
       </>
     );
@@ -64,7 +85,7 @@ const Dashboard = () => {
             </div>
           )}
 
-          <h1>Bienvenido Administrador</h1>
+          <h1>Bienvenido</h1>
           <div
             className="w-95 h-100 rounded-2 p-5 m-3 d-flex align-items-center text-center flex-wrap-reverse flex-md-nowrap  flex-md-row"
             style={
@@ -120,7 +141,7 @@ const Dashboard = () => {
                 <Route exact path="alumnos" element={<AlumnosAdm />} />
                 <Route exact path="horarios" element={<Horarios />} />
                 <Route exact path="preguntas" element={<PreguntasAdm />} />
-                <Route exact path="matricula" element={<Pago />} />
+                <Route exact path="matricula" element={<MatriculaAdmin />} />
                 <Route exact path="profesor" element={<ProfesoresAdmin />} />
               </>
             ) : (

@@ -7,7 +7,7 @@ const ProfesoresAdmin = () => {
 
   const Payload = (correo, dni, nombre, area) => {
     var data = {};
-    data.correo = correo;
+    data.correo = correo.trim();
     data.dni = dni;
     data.nombre = nombre;
     data.area = area;

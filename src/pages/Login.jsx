@@ -1,8 +1,13 @@
 import Header from "../components/Header";
 import img from "../assets/cool-background_1.webp";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
+import { useContext } from "react";
+import { DataContext } from "../Hook/Context";
 const Login = () => {
+
+    const navigate = useNavigate();
+    const {contextData,setContextData} = useContext(DataContext);
 
     function showErrorAlert(message) {
         
@@ -13,24 +18,64 @@ const Login = () => {
       
         setTimeout(() => {
           document.getElementById('container-card').removeChild(alertDiv);
-        }, 4000);
+        }, 5000);
       }
+
+     const auth = async (name, password) => {
+        var data = {};
+        data.correo = name;
+        data.clave = password;
+        
+        const dataJson = data;
+      
+      
+        try {
+          const response = await fetch('http://localhost:8010/login', {
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify(dataJson)
+          });
+      
+          if (response.ok) {
+            const jwt = await response.json();
+            let data = {}
+            data.correo=jwt.correo;
+            data.id=jwt.id;
+            data.nombre=jwt.nombre;
+            data.rol=jwt.rol;
+            setContextData(data);
+            localStorage.setItem("jwt",jwt.token);
+          }
+
+        
+          return response;
+        } catch (error) {
+          console.log(error + 'errors');
+          
+        }
+      };
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-        showErrorAlert("Algo ha ocurrido mal");
-        //var name = document.getElementById("login").value;
-        //var password = document.getElementById("clave").value;
-        /*
+        var name = document.getElementById("login").value;
+        var password = document.getElementById("clave").value;
+        
         try {
           const response = await auth(name, password);
-      
           if (response && response.ok) {
-            navigate('/');
+            navigate('/dashboard');
+            
           }
+          else showErrorAlert("Algo ha ocurrido mal");
+
         } catch (error) {
-          console.log(error);
-        }*/
+          console.log(error, "eerorororor");
+          showErrorAlert("Algo ha ocurrido mal");
+
+        }
       };
 
   return (

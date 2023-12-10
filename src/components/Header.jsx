@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import imagelogo from "../assets/ImageFondoSLG_Ica.webp";
+import { DataContext } from "../Hook/Context";
 
 const Header = () => {
   const [isActive, setIsActive] = useState(false);
+  const {contextData} = useContext(DataContext);
 
   function toogle() {
     if (!isActive) {
       setIsActive(true);
+      console.log(contextData);
     } else {
       setIsActive(false);
     }
@@ -94,7 +97,18 @@ const Header = () => {
                   Sobre nosotros
                 </Link>
               </li>
-              <li className="d-inline px-2">
+              {
+                contextData?
+                <li className="d-inline px-2">
+                <Link
+                  className="btn btn-link text-light text-decoration-none"
+                  to="/logout"
+                >
+                  Logout
+                </Link>
+              </li>
+                :
+                <li className="d-inline px-2">
                 <Link
                   className="btn btn-link text-light text-decoration-none"
                   to="/login"
@@ -102,6 +116,8 @@ const Header = () => {
                   Login
                 </Link>
               </li>
+              }
+              
               <li className="d-inline px-2">
                 <Link
                   className="btn btn-link text-light text-decoration-none"
@@ -131,7 +147,18 @@ const Header = () => {
                 Sobre nosotros
               </Link>
             </li>
-            <li className="list-unstyled">
+            {
+                contextData ?
+                <li className="list-unstyled">
+                <Link
+                  className="btn btn-link text-light text-decoration-none d-block"
+                  to="/logout"
+                >
+                  Logout
+                </Link>
+              </li>
+              :
+              <li className="list-unstyled">
               <Link
                 className="btn btn-link text-light text-decoration-none d-block"
                 to="/login"
@@ -139,6 +166,8 @@ const Header = () => {
                 Login
               </Link>
             </li>
+              }
+            
             <li className="list-unstyled ">
               <Link
                 className="btn btn-link text-light text-decoration-none d-block"

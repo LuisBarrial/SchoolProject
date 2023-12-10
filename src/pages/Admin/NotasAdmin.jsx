@@ -2,11 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import { funcNormalize, isDark } from "../../mock/constFunction";
 import { DARKMODE } from "../../mock/constVariable";
 import PropTypes from "prop-types";
-import RenderCard from "../../components/RenderCard";
-
 
 const NotasAdm = () => {
-  console.log("render");
 
   const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
   const isClassNameDark = isDark(isDarkModeStored);
@@ -145,7 +142,7 @@ RenderCard.propTypes={
                 return (
                     <tr key={idx}>
                       <th>{value.curso.nombre}</th>
-                      <td><input style={{"width":'30px'}} defaultValue={value.e1}/></td>
+                      <td><input style={{"width":'30px'}}  defaultValue={value.e1}/></td>
                       <td><input style={{"width":'30px'}} defaultValue={value.e2}/></td>
                       <td><input style={{"width":'30px'}} defaultValue={value.r1}/></td>
                       <td><input style={{"width":'30px'}} defaultValue={value.e3}/></td>

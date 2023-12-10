@@ -155,7 +155,7 @@ const AlumnosAdm = () => {
 
   async function handlerSubmit(e) {
     e.preventDefault();
-    const correo = document.getElementsByName("correo")[0].value;
+    const correo = document.getElementsByName("correo")[0].value.trim();
     const dni = document.getElementsByName("dni")[0].value;
     const nombre = document.getElementsByName("nombre")[0].value;
     const grado = document.getElementsByName("grado")[0].value;
