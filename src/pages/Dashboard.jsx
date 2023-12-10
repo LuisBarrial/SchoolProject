@@ -5,7 +5,6 @@ import Perfil from "./Perfil";
 import Tramites from "./Tramites";
 import Cursos from "./Cursos";
 import Horarios from "./Horarios";
-import { useEffect, useState } from "react";
 import Alumnos from "./Alumnos";
 import Preguntas from "./Preguntas";
 import { DARKMODE } from "../mock/constVariable";
@@ -18,6 +17,7 @@ import imgadmincontent from "../assets/imageadministratorcontent.webp";
 import CursosAdm from "./Admin/CursosAdmin";
 import TramiteAdmin from "./Admin/TramiteAdmin";
 import ProfesoresAdmin from "./Admin/ProfesoresAdmin";
+import { useState } from "react";
 
 const Dashboard = () => {
   const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
@@ -30,7 +30,7 @@ const Dashboard = () => {
 
   const [about, setAbout] = useState(false);
 
-  const [adm, setAdm] = useState(false);
+  const [adm, setAdm] = useState(true);
 
   const DashboardContent = () => {
     return (

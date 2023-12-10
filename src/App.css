@@ -2,6 +2,72 @@
   --var-colordark: #2f3236;
 }
 
+.circuloTg{
+  width: 25px;
+  height: 25px;
+  position: relative;
+  top: 10px;
+  left: 10px;
+  border-radius: 50%;
+  background-color: aliceblue;
+}
+.txtTg{
+  position: relative;
+  width: 100%;
+  height: 1rem;
+  top: 15px;
+  left: 10px;
+  color: wheat;
+}
+.txtTgUser{
+  position: relative;
+  font-size: 10px;
+  top: 25px;
+  left: 10px;
+  margin-top: 10px;
+  color: wheat;
+}
+
+.contenedorModal{
+  background-color: rgba(47, 48, 50, 0.714);
+  min-height: 100vh;
+  z-index: 999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  width: 100vw !important;
+  justify-content: center;
+  align-items: center;
+}
+.is-Open{
+  display: flex;
+}
+
+.sizeModal{
+  position: relative;
+  min-width: 350px;
+}
+.circuloTg2{
+  width: 15px;
+  height: 15px;
+  position: relative;
+  top: -10px;
+  left: 45px;
+  border-radius: 50%;
+  border: solid 1px rgba(255, 255, 255, 0.8);
+}
+.targetadecredito{
+  width: 200px;
+  height:120px;
+  margin: 0 auto;
+  border-radius: 10px;
+  background-image: linear-gradient(120deg,rgb(172, 83, 172) 50%,rgb(177, 97, 97));
+  user-select: none;
+  cursor: default;
+}
+
+
 .dark-theme {
   --body-color: var(--var-colordark);
   --font-color: rgb(0, 0, 0);

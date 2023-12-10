@@ -7,7 +7,7 @@ import TableAlumnoAdmmin from "../../components/TableAlumnoAdmin";
 const AlumnosAdm = () => {
   const Payload = (correo, dni, nombre, grado) => {
     var data = {};
-    data.correo = correo;
+    data.correo = correo.trim();
     data.dni = dni;
     data.nombre = nombre;
     data.grado = grado;
