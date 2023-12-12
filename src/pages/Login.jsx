@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { DataContext } from "../Hook/Context";
 const Login = () => {
 
+
     const navigate = useNavigate();
     const {contextData,setContextData} = useContext(DataContext);
 

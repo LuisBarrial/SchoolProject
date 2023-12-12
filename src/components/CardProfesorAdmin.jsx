@@ -1,10 +1,32 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const CardProfesorAdmin = ({isClassNameDark, handlerSubmit, dataUpload,disableAddElement}) => {
 
     const [nombre,setNombre] = useState(dataUpload.nombre);
     const [area,setArea] = useState(dataUpload.area)
+    const [curso,setCurso]=useState([]);
+    
+    const getColumns = async () => {
+        const response = await fetch("http://localhost:8010/curso", {
+          method: "GET",
+        });
+        const data = await response.json();
+        return data;
+      };
+      const fetchDataAndSetCurso = useCallback(async () => {
+        const data = await getColumns();
+        setCurso(data);
+      }, []); // No tienes dependencias, ya que no usas ninguna variable externa dentro de la función
+    
+      useEffect(() => {
+        const fetchData = async () => {
+          await fetchDataAndSetCurso();
+        };
+    
+        fetchData();
+      }, [fetchDataAndSetCurso]);
+
 
     return(<>
     <div
@@ -50,13 +72,17 @@ const CardProfesorAdmin = ({isClassNameDark, handlerSubmit, dataUpload,disableAd
                 <label className="m-2" >
                   Ingrese nuevo Area
                   <br />
-                  <input
-                    type="text"
+                  <select
+                    type=""
                     name="area"
                     className="text-center input-group m-auto w-75"
                     onChange={(e)=>{setArea(e.target.value)}}
                     defaultValue={dataUpload.area}
-                  ></input>
+                  
+                  >
+                    {curso.map((data,idx)=>{return(<option key={idx}>{data.nombre}</option>)})}
+
+                  </select>
                 </label>
                 <label className="m-2" >
                   Ingrese nuevo correo

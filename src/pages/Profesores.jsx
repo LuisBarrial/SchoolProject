@@ -38,8 +38,7 @@ const Profesores = () => {
     const records = profesor.slice(firstIndex, lasIndex);
     const npage = Math.ceil(profesor.length / recordsPerPage );
     const numbers = [...Array(npage + 1).keys()].slice(1);
-    const [addElement, setAddElement] = useState(false);
-    const [dataUpload, setDataUpload] = useState({});
+  
 
 
   
@@ -70,12 +69,7 @@ const Profesores = () => {
       }
     };
     function prevPage(){
-      console.log("last" + lasIndex)
-      console.log(firstIndex)
-      console.log(records)
-  
-      console.log("current" +currentPage)
-      console.log("npage" +npage)
+        //funciones de paginacion
       if (currentPage !== firstIndex && currentPage>1){
           setCurrentPage(currentPage - 1)
       }

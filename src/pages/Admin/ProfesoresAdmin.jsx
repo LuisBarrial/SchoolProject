@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { DARKMODE } from "../../mock/constVariable";
 import { funcNormalize, isDark } from "../../mock/constFunction";
 import CardProfesorAdmin from "../../components/CardProfesorAdmin";
+import { showAlertDelete } from "../../components/AlertDelete";
 
 const ProfesoresAdmin = () => {
 

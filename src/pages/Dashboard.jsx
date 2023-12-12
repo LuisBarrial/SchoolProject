@@ -14,6 +14,7 @@ import NotasAdm from "./Admin/NotasAdmin";
 import Pago from "./Pago";
 import Profesores from "./Profesores";
 import imgadmincontent from "../assets/imageadministratorcontent.webp";
+import imgusercontent from "../assets/BetterImageCollege.webp";
 import CursosAdm from "./Admin/CursosAdmin";
 import TramiteAdmin from "./Admin/TramiteAdmin";
 import ProfesoresAdmin from "./Admin/ProfesoresAdmin";
@@ -21,6 +22,8 @@ import { useContext, useEffect, useState } from "react";
 import MatriculaAdmin from "./Admin/MatriculaAdmin";
 import { DataContext } from "../Hook/Context";
 import { jwtDecode } from "jwt-decode";
+import HorariosAdmin from "./Admin/HorariosAdmin";
+import Clave from "./Clave";
 
 const Dashboard = () => {
   const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
@@ -33,22 +36,28 @@ const Dashboard = () => {
 
   const [about, setAbout] = useState(false);
 
-  const {contextData} = useContext(DataContext);
+  const {setContextData} = useContext(DataContext);
+
 
 
 
   useEffect(()=>{
     const token = localStorage.getItem("jwt");
-    let deco = {};
     if(token){
         const decoded = jwtDecode(token);
-        deco = decoded;
-        console.log(deco);
-        if(deco.rol=="ADMIN") setAdm(true);
+        setContextData(decoded)
+        if(decoded.rol=="ADMIN") setAdm(true);
+        else {
+          fetch("http://localhost:8010/estudiante/find?id="+decoded.id)
+          .then((response)=>{return response.json()}).then(data => decoded.grado=data.grado)
+          setContextData(decoded)
+          console.log(decoded); 
+        }
+      
     }
     
   
-},[])
+},[setContextData])
 
 
   const [adm, setAdm] = useState(false);
@@ -59,6 +68,25 @@ const Dashboard = () => {
         <div>
           <h1>Bienvenido</h1>
         </div>
+        <div
+            className="w-95 h-100 rounded-2 p-5 m-3 d-flex align-items-center text-center flex-wrap-reverse flex-md-nowrap  flex-md-row"
+            style={
+              isDarkMode ? { background: "#2f3236" } : { background: "white" }
+            }
+          >
+          <div  className="mt-4 d-flex align-items-center" style={{width: "100%", height: "70vh"}}>
+          <h2>Realiza un seguimiento a tus notas y muchas cosas más!</h2>
+
+          <img
+                      
+
+                rel="preload"
+                className="h-100 w-50 position-relative d-block ms-auto rounded-3"
+                src={imgusercontent}
+              ></img>
+          </div>
+        </div>
+
       </>
     );
   };
@@ -139,7 +167,7 @@ const Dashboard = () => {
                 <Route exact path="tramites" element={<TramiteAdmin/>} />
                 <Route exact path="cursos" element={<CursosAdm/>} />
                 <Route exact path="alumnos" element={<AlumnosAdm />} />
-                <Route exact path="horarios" element={<Horarios />} />
+                <Route exact path="horarios" element={<HorariosAdmin/>} />
                 <Route exact path="preguntas" element={<PreguntasAdm />} />
                 <Route exact path="matricula" element={<MatriculaAdmin />} />
                 <Route exact path="profesor" element={<ProfesoresAdmin />} />

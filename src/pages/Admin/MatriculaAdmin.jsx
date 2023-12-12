@@ -9,6 +9,7 @@ const MatriculaAdmin = () => {
     const isClassNameDark = isDark(isDarkModeStored);
 
     const [alumnos, setAlumnos] = useState([]);
+    const [grado,setGrado] = useState("5A");
     const [currentPage, setCurrentPage] = useState(1);
     const recordsPerPage = 2;
     const lasIndex = currentPage * recordsPerPage;
@@ -34,7 +35,7 @@ const MatriculaAdmin = () => {
 
 
     const getColumns = async () => {
-        const response = await fetch("http://localhost:8010/matricula?grado=5a", {
+        const response = await fetch("http://localhost:8010/matricula?grado="+grado, {
           method: "GET",
         });
         const data = await response.json();
@@ -43,7 +44,8 @@ const MatriculaAdmin = () => {
       const fetchDataAndSetAlumno = useCallback(async () => {
         const data = await getColumns();
         setAlumnos(data);
-      }, []); // No tienes dependencias, ya que no usas ninguna variable externa dentro de la función
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, [grado]); // No tienes dependencias, ya que no usas ninguna variable externa dentro de la función
     
       useEffect(() => {
         const fetchData = async () => {
@@ -58,10 +60,10 @@ const MatriculaAdmin = () => {
         <div>
             <h1>Matriculas</h1>
             <div className="d-flex align-items-center">
-            <input type="search" className={ "w-50 form-control my-2 " + isClassNameDark} placeholder="Busca por Salon" />
+            <input id="salon" type="search" className={ "w-50 form-control my-2 " + isClassNameDark} placeholder="Busca por Salon" />
             <button
                 className={"mx-1 my-2 btn h-50 d-block btn-info"}
-
+                onClick={()=>{const salon = document.getElementById("salon").value; setGrado(salon)}}
               >
                 Buscar
               </button>
@@ -71,6 +73,7 @@ const MatriculaAdmin = () => {
                   <tr>
                     <th>Id</th>
                     <th>Nombre</th>
+                    <th>Grado</th>
                     <th>Estado</th>
                     <th>Fecha</th>
                   </tr>
@@ -81,6 +84,7 @@ const MatriculaAdmin = () => {
     <tr key={idx}>
                     <td>{idx+1}</td>
                     <td>{data.nombre}</td>
+                    <th>{grado}</th>
                     <td>{data.estado}</td>
                     <td>{data.fecha}</td>
        

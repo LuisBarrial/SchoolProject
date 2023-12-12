@@ -12,7 +12,8 @@ const Index = () => {
     let textoMain = document.getElementById("txt-main");
     let icons = document.querySelectorAll(".icon");
 
-    function verificarObserver(entries) {
+    function verificarObserver(entries) { /*usando los observers para que los iconos
+     aparezcan al saber que estan en el vierport*/
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           textoMain.classList.add("animation-observers");

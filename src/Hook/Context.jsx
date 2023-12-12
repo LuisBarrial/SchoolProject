@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import { jwtDecode } from "jwt-decode";
 
 
-export const DataContext = createContext();
+export const DataContext = createContext(); /*Estableciendo contexto para poder acceder desde todos los componentes 
+del dashboaard*/
 
 export function DataContextProvider(props){
     const token = localStorage.getItem("jwt");

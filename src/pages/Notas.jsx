@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { funcNormalize, isDark } from "../mock/constFunction";
 import { DARKMODE } from "../mock/constVariable";
+import { DataContext } from "../Hook/Context";
 
 const Notas = () => {
   console.log("render")
@@ -9,9 +10,11 @@ const Notas = () => {
 
   const [notas,setNotas]=useState([]);
   const [auxNotas,setAuxNotas]=useState([]);
+  const {contextData} = useContext(DataContext);
+
 
   const getColumns = async () => {
-    const response = await fetch("http://localhost:8010/notas?idEstudiante=19", {
+    const response = await fetch("http://localhost:8010/notas?idEstudiante="+contextData.id, {
       method: "GET",
     });
     const data = await response.json();

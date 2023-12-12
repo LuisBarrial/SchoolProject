@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { funcNormalize, isDark } from "../mock/constFunction";
 import { DARKMODE } from "../mock/constVariable";
+import { DataContext } from "../Hook/Context";
 
 const Alumnos = () => {
   const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
@@ -16,20 +17,24 @@ const Alumnos = () => {
   const numbers = [...Array(npage + 1).keys()].slice(1);
     
 
+  const {contextData} = useContext(DataContext);
 
-  const getColumns = async () => {
-    const response = await fetch("http://localhost:8010/estudiante/usuario?grado=5A", {
-      method: "GET",
-    });
-    const data = await response.json();
-    return data;
-  };
+
   const fetchDataAndSetAlumno = useCallback(async () => {
+    const getColumns = async () => {
+      const response = await fetch("http://localhost:8010/estudiante/grado?grado="+contextData.grado, {
+        method: "GET",
+      });
+      const data = await response.json();
+      return data;
+    };
+  
     const data = await getColumns();
     setAlumno(data);
     setAuxAlumno(data);
-  }, []); // No tienes dependencias, ya que no usas ninguna variable externa dentro de la función
-
+    return data;
+  }, [contextData.grado]);
+  
   useEffect(() => {
     const fetchData = async () => {
       await fetchDataAndSetAlumno();
@@ -37,6 +42,7 @@ const Alumnos = () => {
 
     fetchData();
   }, [fetchDataAndSetAlumno]);
+
 
   
   const normalizeText = funcNormalize;

@@ -5,7 +5,7 @@ import { DataContext } from "../Hook/Context";
 
 const Header = () => {
   const [isActive, setIsActive] = useState(false);
-  const {contextData} = useContext(DataContext);
+  const {contextData,setContextData} = useContext(DataContext);
 
   function toogle() {
     if (!isActive) {
@@ -14,6 +14,19 @@ const Header = () => {
     } else {
       setIsActive(false);
     }
+  }
+  const logout = async() => {
+
+    const response =await fetch('http://localhost:8010/logout',{method: 'POST'});
+
+    if(response.ok && response){
+      localStorage.removeItem("jwt");
+      setContextData(undefined);
+      window.location.reload();
+    }
+  
+
+
   }
 
   return (
@@ -98,11 +111,11 @@ const Header = () => {
                 </Link>
               </li>
               {
-                contextData?
+                contextData.id?
                 <li className="d-inline px-2">
                 <Link
                   className="btn btn-link text-light text-decoration-none"
-                  to="/logout"
+                  onClick={()=>{logout()}}
                 >
                   Logout
                 </Link>
@@ -148,11 +161,11 @@ const Header = () => {
               </Link>
             </li>
             {
-                contextData ?
+                contextData.id ?
                 <li className="list-unstyled">
                 <Link
                   className="btn btn-link text-light text-decoration-none d-block"
-                  to="/logout"
+                  onClick={()=>{logout()}}
                 >
                   Logout
                 </Link>

@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
 import Nosotros from "./pages/Nosotros";
 import Politicas from "./pages/Politicas";
+import Clave from "./pages/Clave";
 const Login = lazy(() => import("./pages/Login"));
 
 function App() {
@@ -32,7 +33,7 @@ function App() {
           <Route exact path="/register" element={<Register />}></Route>
           <Route exact path="/nosotros" element={<Nosotros />}></Route>
           <Route exact path="/Politicas" element={<Politicas />}></Route>
-
+          <Route exact path="/password/*" element={<Clave />} />
 
         </Routes>
       </BrowserRouter>

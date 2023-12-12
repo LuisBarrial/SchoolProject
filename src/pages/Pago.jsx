@@ -1,10 +1,11 @@
 import { CardElement, Elements, useElements, useStripe } from "@stripe/react-stripe-js";
 import { isDark } from "../mock/constFunction";
 import { DARKMODE } from "../mock/constVariable";
-import { useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useModal } from "../Hook/useModal";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
+import { DataContext } from "../Hook/Context";
 
 const Pago = () => {
 
@@ -12,6 +13,31 @@ const Pago = () => {
     const isClassNameDark = isDark(isDarkModeStored);
     const [isOpenModal1,openModal1,closeModal1]=useModal(false);
     const stripePromise = loadStripe("pk_test_51MOBvyG2gKdepiJhBcX1hAqTy9VdFr2Q9a6bwIOIxLZM97xPf4iBF6soFQmhLuftXQWeVIJEehrkuFT9en54kFsI00pVL98EO7");
+    const [data,setData] = useState({});
+
+    const {contextData} = useContext(DataContext);
+
+
+    const getColumns = async () => {
+        const response = await fetch("http://localhost:8010/matricula/usuario?id="+contextData.id, {
+          method: "GET",
+        });
+        const data = await response.json();
+        
+        return data;
+      };
+      const fetchDataAndSetAlumno = useCallback(async () => {
+        const data = await getColumns();
+        setData(data);
+      }, []); // No tienes dependencias, ya que no usas ninguna variable externa dentro de la función
+    
+      useEffect(() => {
+        const fetchData = async () => {
+          await fetchDataAndSetAlumno();
+        };
+    
+        fetchData();
+      }, [fetchDataAndSetAlumno]);
 
 
     const CheckoutForm = (props)=>{
@@ -21,6 +47,8 @@ const Pago = () => {
         const [loading,setLoading]=useState(false);
         const stripe = useStripe();
         const elements = useElements();
+
+
     
         const handleSubmit = async (e)=>{
             e.preventDefault();
@@ -38,23 +66,23 @@ const Pago = () => {
                 const {id} = paymentMethod;
 
                 var datos = {}
-                const nombre = "alumno";
-                const cantidad = 250;
+                const nombre = data.nombre;
+                const correo = data.correo;
                 datos.nombre = nombre;
-                datos.cantidad = cantidad;
+                datos.correo = correo;
 
         
                try {
                 const {data}= await axios.post('http://localhost:3001/api/checkout',{
                     id,
                     amount: 5000,
+                    idUsuario: contextData.id,
                     datos: JSON.stringify(datos)
                  })
     
                console.log(data);  
-    
+
                elements.getElement(CardElement).clear();
-    
                } catch (error) {
     
                 console.log(error);
@@ -63,7 +91,6 @@ const Pago = () => {
     
     
               setLoading(false);
-    
               
             }
     
@@ -110,7 +137,7 @@ const Pago = () => {
             <div className={`p-4 contenedorModal ${isOpenModal1 && "is-Open"}`} onClick={closeModal1}>
                 <div className="row">
                     <div className="sizeModal col-xs-8 col-md-9 mx-md-auto mx-lg-auto col-lg-7" onClick={handleModalContainerClick}>
-                    <CheckoutForm isOpen={isOpenModal1} closeModal={closeModal1} pago={400}></CheckoutForm>
+                    <CheckoutForm isOpen={isOpenModal1} closeModal={closeModal1} pago={400} ></CheckoutForm>
                     </div>
                 </div>
             </div>
@@ -126,11 +153,11 @@ const Pago = () => {
                     <span className="h1 d-block w-100 overflow-hidden" style={{height:'20px', letterSpacing: '0.3rem', lineHeight: '0.1'}}>.....................................................................</span>
                     <div className="d-flex w-100 justify-content-center justify-content-md-between align-items-center mx-auto flex-wrap flex-md-nowrap">
                     <div className="d-flex flex-column align-items-center text-center">
-                        <span className="h5 my-4 mx-3" >Monto a pagar : 400</span>
-                        <span className="h5 my-4 mx-3">Estado: PAGADO</span>
+                        <span className="h5 my-4 mx-3" >Monto a pagar : 300</span>
+                        <span className="h5 my-4 mx-3">Estado: {data.estado}</span>
 
                     </div>
-                    <button className="btn btn-info px-4 py-2 rounded-4" onClick={()=>{openModal1()}}> <span className="h6">Pagar</span></button>
+                    <button disabled={data.estado=="PAGADO"? true: false} className="btn btn-info px-4 py-2 rounded-4" onClick={()=>{openModal1()}}> <span className="h6">Pagar</span></button>
                     </div>
                     <div className="table-responsive">
                     <table className={"table w-100 text-center my-3" + isClassNameDark }>
@@ -148,7 +175,7 @@ const Pago = () => {
                                 <td>MD01201201</td>
                                 <td>MatriculaSLG-1</td>
                                 <td>300</td>
-                                <td>Pagado</td>
+                                <td>{data.estado}</td>
 
                             </tr>
                         </tbody>

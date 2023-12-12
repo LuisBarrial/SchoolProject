@@ -53,6 +53,7 @@ const CardAlumnoAdmin = ({isClassNameDark, handlerSubmit, dataUpload,disableAddE
                   <input
                     type="text"
                     name="grado"
+                    title="Ingresa un formato valido Ej. 4A, 3B,5D"
                     className="text-center input-group m-auto w-75"
                     onChange={(e)=>{setGrado(e.target.value)}}
                     defaultValue={dataUpload.grado}

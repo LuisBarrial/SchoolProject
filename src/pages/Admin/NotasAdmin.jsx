@@ -1,10 +1,13 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { funcNormalize, isDark } from "../../mock/constFunction";
 import { DARKMODE } from "../../mock/constVariable";
 import PropTypes from "prop-types";
+import { DataContext } from "../../Hook/Context";
 
 const NotasAdm = () => {
+  const { contextData } = useContext(DataContext);
 
+  const [id, setId] = useState();
   const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
   const isClassNameDark = isDark(isDarkModeStored);
   const [alumno, setAlumno] = useState([]);
@@ -17,13 +20,14 @@ const NotasAdm = () => {
   const npage = Math.ceil(alumno.length / recordsPerPage);
   const numbers = [...Array(npage + 1).keys()].slice(1);
 
-  const [notas,setNotas] = useState([]);
-
+  const [notas, setNotas] = useState([]);
+  const [submited, setSubmited] = useState(false);
   const getColumns = async () => {
     const response = await fetch("http://localhost:8010/estudiante", {
       method: "GET",
     });
     const data = await response.json();
+    sessionStorage.setItem("alumnos", data.length);
     return data;
   };
   const fetchDataAndSetAlumno = useCallback(async () => {
@@ -78,25 +82,54 @@ const NotasAdm = () => {
   }
 
   const getColumnsNotas = async (id) => {
-    const response = await fetch("http://localhost:8010/notas?idEstudiante="+id, {
-      method: "GET",
-    });
+    const response = await fetch(
+      "http://localhost:8010/notas?idEstudiante=" + id,
+      {
+        method: "GET",
+      }
+    );
     const data = await response.json();
     return data;
   };
 
+  const getColumnsPorGrado = async (grado) => {
+    const response = await fetch(
+      "http://localhost:8010/estudiante/grado?grado=" + grado,
+      {
+        method: "GET",
+      }
+    );
+    const data = await response.json();
+    setAlumno(data);
+    return data;
+  };
 
   const [cardModal, setCardModal] = useState(false);
 
+  const RenderCard = ({ notas, id }) => {
+    function handleKeyPress(event) {
+      const charCode = event.which ? event.which : event.keyCode;
+      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        event.preventDefault();
+      }
+    }
+    function updateElements() {
+      fetch("http://localhost:8010/notas?id=" + id, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(notas),
+      }).then(() => {
+        setCardModal(false);
+        console.log(JSON.stringify(notas));
+      });
+    }
 
-
-
-  const RenderCard = ({notas}) => {
-    console.log(notas)
-      
-RenderCard.propTypes={
-  notas: PropTypes.array
-}
+    RenderCard.propTypes = {
+      notas: PropTypes.array,
+      id: PropTypes.number,
+    };
     return (
       <form
         className={
@@ -107,8 +140,7 @@ RenderCard.propTypes={
           backgroundColor: "#e0dada !important",
           transform: "translate(-50%,-50%)",
           borderRadius: "10px 10px",
-          border: '3px solid black'
-
+          border: "3px solid black",
         }}
       >
         <h3 className="text-center">Notas</h3>
@@ -118,9 +150,7 @@ RenderCard.propTypes={
             className="form-select form-select-sm"
             aria-label=".form-select-sm example"
           >
-            <option selected value="1">
-              Primero
-            </option>
+            <option value="1">Primero</option>
             <option value="2">Segundo</option>
             <option value="3">Tercer</option>
             <option value="4">Cuarto</option>
@@ -138,39 +168,156 @@ RenderCard.propTypes={
               </tr>
             </thead>
             <tbody>
-              {notas.map((value,idx) => {
+              {notas.map((value, idx) => {
                 return (
-                    <tr key={idx}>
-                      <th>{value.curso.nombre}</th>
-                      <td><input style={{"width":'30px'}}  defaultValue={value.e1}/></td>
-                      <td><input style={{"width":'30px'}} defaultValue={value.e2}/></td>
-                      <td><input style={{"width":'30px'}} defaultValue={value.r1}/></td>
-                      <td><input style={{"width":'30px'}} defaultValue={value.e3}/></td>
-                      <td><input style={{"width":'30px'}} defaultValue={value.ef}/></td>
-                      <td><input style={{"width":'30px'}} defaultValue={value.rf}/></td>
-                    </tr>
+                  <tr key={idx}>
+                    <th>{value.curso.nombre}</th>
+                    <td>
+                      <input
+                        onKeyDown={handleKeyPress}
+                        disabled={submited ? false : true}
+                        style={{ width: "30px" }}
+                        defaultValue={value.e1}
+                        onChange={(e) => {
+                          if (parseInt(e.target.value) > 20) {
+                            alert(
+                              "el numero no puede ser mayor a 20, no se va a guardar"
+                            );
+                            e.target.value = parseInt(e.target.value) % 20;
+                          } else notas[idx].e1 = e.target.value;
+                        }}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        onKeyDown={handleKeyPress}
+                        disabled={submited ? false : true}
+                        style={{ width: "30px" }}
+                        defaultValue={value.e2}
+                        onChange={(e) => {
+                          if (parseInt(e.target.value) > 20) {
+                            alert(
+                              "el numero no puede ser mayor a 20, no se va a guardar"
+                            );
+                            e.target.value = parseInt(e.target.value) % 20;
+                          } else notas[idx].e2 = e.target.value;
+                        }}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        onKeyDown={handleKeyPress}
+                        disabled={submited ? false : true}
+                        style={{ width: "30px" }}
+                        defaultValue={value.r1}
+                        onChange={(e) => {
+                          if (parseInt(e.target.value) > 20) {
+                            alert(
+                              "el numero no puede ser mayor a 20, no se va a guardar"
+                            );
+                            e.target.value = parseInt(e.target.value) % 20;
+                          } else notas[idx].e3 = e.target.value;
+                        }}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        onKeyDown={handleKeyPress}
+                        disabled={submited ? false : true}
+                        style={{ width: "30px" }}
+                        defaultValue={value.e3}
+                        onChange={(e) => {
+                          if (parseInt(e.target.value) > 20) {
+                            alert(
+                              "el numero no puede ser mayor a 20, no se va a guardar"
+                            );
+                            e.target.value = parseInt(e.target.value) % 20;
+                          } else notas[idx].e4 = e.target.value;
+                        }}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        onKeyDown={handleKeyPress}
+                        disabled={submited ? false : true}
+                        style={{ width: "30px" }}
+                        defaultValue={value.ef}
+                        onChange={(e) => {
+                          if (parseInt(e.target.value) > 20) {
+                            alert(
+                              "el numero no puede ser mayor a 20, no se va a guardar"
+                            );
+                            e.target.value = parseInt(e.target.value) % 20;
+                          } else notas[idx].e5 = e.target.value;
+                        }}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        onKeyDown={handleKeyPress}
+                        disabled={submited ? false : true}
+                        style={{ width: "30px" }}
+                        defaultValue={value.rf}
+                        onChange={(e) => {
+                          if (parseInt(e.target.value) > 20) {
+                            alert(
+                              "el numero no puede ser mayor a 20, no se va a guardar"
+                            );
+                            e.target.value = parseInt(e.target.value) % 20;
+                          } else notas[idx].e6 = e.target.value;
+                        }}
+                      />
+                    </td>
+                  </tr>
                 );
               })}
             </tbody>
           </table>
-          <button
-            type="button"
-            className="d-block m-auto btn bg-info"
-            onClick={() => {
-              setCardModal(false);
-            }}
-          >
-            cerrar
-          </button>
+          {submited ? (
+            <>
+              <div className="d-flex justify-content-center align-items-center">
+                <button
+                  type="button"
+                  className="d-block m-auto btn bg-info"
+                  onClick={() => {
+                    console.log(notas);
+                    updateElements();
+                  }}
+                >
+                  ACTUALIZAR
+                </button>
+                <button
+                  type="button"
+                  className="d-block m-auto btn bg-info"
+                  onClick={() => {
+                    setCardModal(false);
+                  }}
+                >
+                  Cerrar
+                </button>
+              </div>
+            </>
+          ) : (
+            <button
+              type="button"
+              className="d-block m-auto btn bg-info"
+              onClick={() => {
+                setCardModal(false);
+              }}
+            >
+              cerrar
+            </button>
+          )}
         </div>
       </form>
     );
   };
 
-  
   return (
     <>
-      {cardModal && <RenderCard notas={notas} />}
+      {cardModal && (
+        <RenderCard notas={notas} handleSubmit={submited} id={id} />
+      )}
       <div>
         <h1>Notas Admin</h1>
         <div className="d-flex align-items-center justify-content-around flex-wrap col-12">
@@ -184,11 +331,23 @@ RenderCard.propTypes={
           />
           <div className="d-flex align-items-center col-6 ">
             <input
+              id="salon"
               className={"form-control my-2 w-50  col-6 " + isClassNameDark}
               type="search"
               placeholder="Busca Por salon"
+              onChange={(e) => {
+                if (e.target.value == "") setAlumno(auxAlumno);
+              }}
             />
-            <button className="mx-1 btn h-50 d-block btn-info"> Buscar</button>
+            <button
+              className="mx-1 btn h-50 d-block btn-info"
+              onClick={() => {
+                getColumnsPorGrado(document.getElementById("salon").value);
+              }}
+            >
+              {" "}
+              Buscar
+            </button>
           </div>
         </div>
         <div className="table-responsive">
@@ -205,16 +364,22 @@ RenderCard.propTypes={
               </tr>
             </thead>
             <tbody>
-              {records.map((datax,idx) => {
+              {records.map((datax, idx) => {
                 return (
                   <tr key={idx}>
-                    <td>{idx+1}</td>
+                    <td>{idx + 1}</td>
                     <td>{datax.nombre}</td>
                     <td>
                       <div className="d-flex justify-content-evenly">
                         <div
                           className=""
-                          onClick={async () => {  const infoNota = await getColumnsNotas(datax.id); setNotas(infoNota);    setCardModal(true); } }
+                          onClick={async () => {
+                            const infoNota = await getColumnsNotas(datax.id);
+                            setSubmited(true);
+                            setNotas(infoNota);
+                            setId(datax.id);
+                            setCardModal(true);
+                          }}
                           style={{ cursor: "pointer" }}
                         >
                           <svg
@@ -236,7 +401,17 @@ RenderCard.propTypes={
                           </svg>
                         </div>
 
-                        <div className="" style={{ cursor: "pointer" }}>
+                        <div
+                          className=""
+                          style={{ cursor: "pointer" }}
+                          onClick={async () => {
+                            const infoNota = await getColumnsNotas(datax.id);
+                            setSubmited(false);
+                            setNotas(infoNota);
+                            setId(datax.id);
+                            setCardModal(true);
+                          }}
+                        >
                           {" "}
                           <svg
                             height={20}
@@ -327,16 +502,7 @@ RenderCard.propTypes={
           >
             <div className="card-body ">
               <h5 className="card-title">Alumnos Existentes</h5>
-              <h1>{alumno.length}</h1>
-            </div>
-          </div>
-          <div
-            className={"card m-2 col-5 col-md-3 text-center" + isClassNameDark}
-            style={{ minWidth: "2rem" }}
-          >
-            <div className="card-body">
-              <h5 className="card-title">Alumnos Desaprobados</h5>
-              <h1>9</h1>
+              <h1>{sessionStorage.getItem("alumnos")}</h1>
             </div>
           </div>
         </div>
@@ -345,4 +511,3 @@ RenderCard.propTypes={
   );
 };
 export default NotasAdm;
-

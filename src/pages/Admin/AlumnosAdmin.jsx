@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { funcNormalize, isDark } from "../../mock/constFunction";
 import { DARKMODE } from "../../mock/constVariable";
 import CardAlumnoAdmin from "../../components/CardAlumnoAdmin";
 import TableAlumnoAdmmin from "../../components/TableAlumnoAdmin";
+import { DataContext } from "../../Hook/Context";
 
 const AlumnosAdm = () => {
   const Payload = (correo, dni, nombre, grado) => {
@@ -32,7 +33,7 @@ const AlumnosAdm = () => {
       .catch((error) => {
         console.error("Error en la solicitud:", error);
       });
-  };
+  };  //funcion para enviar la informacion
 
   const uploadData = (id, nombre, grado,event) => {
     event.preventDefault();
@@ -62,7 +63,7 @@ const AlumnosAdm = () => {
       .catch((error) => {
         console.error("Error en la solicitud:", error);
       });
-  };
+  };//funcion para actualizar la informacion
 
   const getColumns = async () => {
     const response = await fetch("http://localhost:8010/estudiante", {
@@ -75,8 +76,7 @@ const AlumnosAdm = () => {
     const data = await getColumns();
     setAlumno(data);
     setAuxAlumno(data);
-  }, []); // No tienes dependencias, ya que no usas ninguna variable externa dentro de la función
-
+  }, []); 
   useEffect(() => {
     const fetchData = async () => {
       await fetchDataAndSetAlumno();
@@ -84,6 +84,18 @@ const AlumnosAdm = () => {
 
     fetchData();
   }, [fetchDataAndSetAlumno]);
+
+
+  const getColumnsPorGrado = async (grado) => {
+    const response = await fetch("http://localhost:8010/estudiante/grado?grado="+grado, {
+      method: "GET",
+    });
+    const data = await response.json();
+    setAlumno(data);
+    return data;
+  };
+
+  
 
   const deleteData = (id) => {
     fetch("http://localhost:8010/estudiante/" + id, {
@@ -105,7 +117,7 @@ const AlumnosAdm = () => {
       .catch((error) => {
         console.error("Error en la solicitud:", error);
       });
-  };
+  };//funcion para eliminar la informacion
 
   const isDarkModeStored = localStorage.getItem("dark") === DARKMODE.TRUE;
   const isClassNameDark = isDark(isDarkModeStored);
@@ -124,6 +136,11 @@ const AlumnosAdm = () => {
 
   const normalizeText = funcNormalize;
 
+  const {contextData} = useContext(DataContext);
+
+
+
+  
   const handleChangeText = (value) => {
     const normalizeValue = normalizeText(value);
     const newAlumnos = alumno.filter((alumnos) => {
@@ -176,15 +193,18 @@ const AlumnosAdm = () => {
           ></CardAlumnoAdmin>
         )}
         <div className="d-flex align-items-center flex-wrap">
-          <button
+{ contextData.rol=="ADMIN" &&          
+
+<button
             className="mx-1 btn h-50 d-block btn-info"
+          
             onClick={() => {
               setDataUpload({})
               setAddElement(true);
             }}
           >
             Nuevo
-          </button>
+          </button>}
           <input
             className={"form-control my-2 mx-1 w-50" + isClassNameDark}
             type="search"
@@ -195,11 +215,13 @@ const AlumnosAdm = () => {
           />
           <div className="d-flex align-items-center">
             <input
+              id="salon"
               className={"form-control my-2 w-50" + isClassNameDark}
               type="search"
               placeholder="Busca Por salon"
             />
-            <button className="mx-1 btn h-50 d-block btn-info"> Buscar</button>
+            <button className="mx-1 btn h-50 d-block btn-info" 
+            onClick={()=>{getColumnsPorGrado(document.getElementById("salon").value);}}> Buscar</button>
           </div>
         </div>
         <div
